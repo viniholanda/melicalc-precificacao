@@ -417,7 +417,7 @@ export default function App() {
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Settings size={20} className="text-primary" />
                   </div>
-                  <h3 className="font-headline text-xl font-bold">Configuração do Produto</h3>
+                  <h3 className="font-headline text-2xl font-black text-primary">Viabilidade do Produto</h3>
                 </div>
 
                 <div className="space-y-5">
@@ -468,7 +468,7 @@ export default function App() {
 
                   {/* Category & Commission */}
                   <div className="pt-4 border-t border-outline-variant/10">
-                    <h4 className="text-sm font-bold text-on-surface-variant mb-4">Comissão e Logística</h4>
+                    <h4 className="text-base font-extrabold text-primary mb-4 uppercase tracking-wide">Comissão e Logística</h4>
                     <CategorySelector
                       currentCommission={product.categoryTax}
                       onSelectCategory={(commission) => setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: commission } : p))}
@@ -487,11 +487,11 @@ export default function App() {
 
                   {/* Margem / preço atual */}
                   <div className="pt-4 border-t border-outline-variant/10">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-sm font-bold text-on-surface-variant">LUCRO/MERCADO</h4>
-                      <div className="flex bg-surface-container p-1 rounded-lg">
-                        <button onClick={() => setActiveTab('reverse')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'reverse' ? 'bg-white text-primary shadow-sm' : 'text-outline'}`}>PREÇO IDEAL</button>
-                        <button onClick={() => setActiveTab('current')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'current' ? 'bg-white text-primary shadow-sm' : 'text-outline'}`}>PREÇO DE MERCADO</button>
+                    <div className="flex flex-col gap-4 mb-4">
+                      <h4 className="text-base font-extrabold text-primary uppercase tracking-wide">Lucro / Mercado</h4>
+                      <div className="flex gap-4">
+                        <button onClick={() => setActiveTab('reverse')} className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all text-sm uppercase tracking-wide ${activeTab === 'reverse' ? 'bg-primary text-white shadow-xl hover:shadow-primary/40 border-b-4 border-primary-fixed' : 'bg-surface-container text-on-surface-variant hover:bg-surface-variant'}`}>PREÇO IDEAL</button>
+                        <button onClick={() => setActiveTab('current')} className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all text-sm uppercase tracking-wide ${activeTab === 'current' ? 'bg-primary text-white shadow-xl hover:shadow-primary/40 border-b-4 border-primary-fixed' : 'bg-surface-container text-on-surface-variant hover:bg-surface-variant'}`}>PREÇO DE MERCADO</button>
                       </div>
                     </div>
                     {activeTab === 'reverse' ? (
@@ -517,7 +517,7 @@ export default function App() {
                   <div className="pt-4 border-t border-outline-variant/10">
                     <div className="flex items-center gap-2 mb-4">
                       <Truck size={15} className="text-primary" />
-                      <h4 className="text-sm font-bold text-on-surface-variant">Frete — Peso e Dimensões</h4>
+                      <h4 className="text-base font-extrabold text-primary uppercase tracking-wide">Frete — Peso e Dimensões</h4>
                     </div>
                     <div className="grid grid-cols-4 gap-3 bg-surface-container-low p-4 rounded-xl">
                       {[

@@ -413,14 +413,14 @@ export default function App() {
                       <label className="label-text">Custo do Produto (R$)</label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                        <input type="number" name="cost" value={product.cost || ''} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pl-10" step="0.01" min="0" placeholder="0" />
+                        <input type="number" name="cost" value={product.cost} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pl-10" step="0.01" min="0" />
                       </div>
                     </div>
                     <div>
                       <label className="label-text">Embalagem (R$)</label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                        <input type="number" name="packaging" value={product.packaging || ''} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pl-10" step="0.01" min="0" placeholder="0" />
+                        <input type="number" name="packaging" value={product.packaging} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pl-10" step="0.01" min="0" />
                       </div>
                     </div>
                   </div>
@@ -439,7 +439,7 @@ export default function App() {
                   <div>
                     <label className="label-text">Imposto (%)</label>
                     <div className="relative">
-                      <input type="number" name="taxPercentage" value={product.taxPercentage || ''} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pr-8" step="0.1" min="0" max="99" placeholder="0" />
+                      <input type="number" name="taxPercentage" value={product.taxPercentage} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pr-8" step="0.1" min="0" max="99" />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
                     </div>
                   </div>
@@ -457,7 +457,7 @@ export default function App() {
                       <div>
                         <label className="label-text">Margem Desejada (%)</label>
                         <div className="relative">
-                          <input type="number" name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin || ''} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pr-8 text-lg font-bold" placeholder="0" />
+                          <input type="number" name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pr-8 text-lg font-bold" />
                           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
                         </div>
                       </div>
@@ -466,7 +466,7 @@ export default function App() {
                         <label className="label-text">Preço de Venda Atual (R$)</label>
                         <div className="relative">
                           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                          <input type="number" value={currentPrice || ''} onChange={(e) => setCurrentPrice(parseFloat(e.target.value) || 0)} onFocus={handleNumberFocus} className="input-field pl-10 text-lg font-bold" step="0.01" placeholder="0" />
+                          <input type="number" value={currentPrice} onChange={(e) => setCurrentPrice(parseFloat(e.target.value) || 0)} onFocus={handleNumberFocus} className="input-field pl-10 text-lg font-bold" step="0.01" />
                         </div>
                       </div>
                     )}
@@ -487,7 +487,7 @@ export default function App() {
                       ].map(f => (
                         <div key={f.name}>
                           <label className="block text-[10px] font-bold text-outline mb-1 uppercase">{f.label}</label>
-                          <input type="number" name={f.name} value={(product as any)[f.name] || ''} onChange={handleInputChange} onFocus={handleNumberFocus} step={f.step} min="0" className="w-full bg-transparent border-b border-outline/20 focus:border-primary focus:outline-none py-1 text-sm font-bold" placeholder="0" />
+                          <input type="number" name={f.name} value={(product as any)[f.name]} onChange={handleInputChange} onFocus={handleNumberFocus} step={f.step} min="0" className="w-full bg-transparent border-b border-outline/20 focus:border-primary focus:outline-none py-1 text-sm font-bold" />
                         </div>
                       ))}
                     </div>

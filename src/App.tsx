@@ -281,20 +281,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background">
       {/* ── Top App Bar ── */}
-      <header className="fixed top-0 w-full z-50 h-16 flex items-center justify-between px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
-        <div className="flex items-center gap-8">
-          <h1 className="text-xl font-bold text-primary tracking-wide font-headline">MeliCalc</h1>
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="#" className="text-primary font-semibold text-sm">Dashboard</a>
-            <a href="#" className="text-slate-500 hover:text-on-surface text-sm px-3 py-2 rounded-lg hover:bg-surface-container transition-colors">Produtos</a>
-            <a href="#" className="text-slate-500 hover:text-on-surface text-sm px-3 py-2 rounded-lg hover:bg-surface-container transition-colors">Logística</a>
-          </nav>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center bg-surface-container-high px-3 py-1.5 rounded-full gap-2">
-            <Search size={16} className="text-outline" />
-            <input className="bg-transparent border-none focus:outline-none text-sm w-36 placeholder:text-outline/60" placeholder="Buscar cálculo..." type="text" />
-          </div>
       <header className="fixed top-0 w-full z-50 h-16 flex items-center px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
         <div className="flex-1"></div>
         <h1 className="text-xl font-bold text-primary tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>

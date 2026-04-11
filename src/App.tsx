@@ -305,12 +305,8 @@ export default function App() {
           Novo Produto
         </button>
 
-        <div className="flex-1 space-y-2">
-          <h2 className="text-primary font-headline font-bold text-xs tracking-widest uppercase opacity-60">Meus Produtos</h2>
-        </div>
-
-        {/* Product list */}
-        <div className="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+        <div className="space-y-1 overflow-y-auto custom-scrollbar">
+          <h2 className="text-primary font-headline font-bold text-xs tracking-widest uppercase opacity-60 mb-2">Meus Produtos</h2>
           {products.map(p => (
             <div
               key={p.id}

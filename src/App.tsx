@@ -554,13 +554,13 @@ export default function App() {
                       <div className="mt-8 grid grid-cols-2 gap-4">
                         <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg">
                           <span className="text-primary-fixed/60 text-[10px] font-bold uppercase block mb-1">Lucro Líquido</span>
-                          <span className={`text-2xl font-bold ${pricingResult.profit >= 0 ? 'text-secondary-fixed' : 'text-red-300'}`}>
+                          <span className={`text-2xl font-bold ${pricingResult.profit >= 0 ? 'text-ml-green' : 'text-red-300'}`}>
                             {formatCurrency(pricingResult.profit)}
                           </span>
                         </div>
                         <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg">
                           <span className="text-primary-fixed/60 text-[10px] font-bold uppercase block mb-1">Margem Real</span>
-                          <span className={`text-2xl font-bold ${pricingResult.profitMargin >= 0 ? 'text-secondary-fixed' : 'text-red-300'}`}>
+                          <span className={`text-2xl font-bold ${pricingResult.profitMargin >= 0 ? 'text-ml-green' : 'text-red-300'}`}>
                             {pricingResult.profitMargin.toFixed(2)}%
                           </span>
                         </div>
@@ -687,8 +687,8 @@ export default function App() {
                                     </div>
                                   </td>
                                   <td className="py-3 px-2 text-right font-mono font-bold text-on-surface text-sm">{formatCurrency(record.sellingPrice)}</td>
-                                  <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-teal-600' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
-                                  <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-teal-600' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
+                                  <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
+                                  <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
                                   <td className="py-3 px-2">
                                     <div className="flex flex-col gap-1.5">
                                       <input type="text" value={record.comment} onChange={e => updateRecord(record.id, 'comment', e.target.value)} placeholder="Comentário..."
@@ -703,7 +703,7 @@ export default function App() {
                                   </td>
                                   <td className="py-3 px-2 rounded-r-xl">
                                     <div className="flex items-center justify-end gap-1">
-                                      <button onClick={() => setEditingId(null)} className="p-1.5 text-teal-600 hover:bg-teal-50 rounded-lg transition-colors" title="Confirmar"><Check size={14} /></button>
+                                      <button onClick={() => setEditingId(null)} className="p-1.5 text-ml-green hover:bg-ml-green/10 rounded-lg transition-colors" title="Confirmar"><Check size={14} /></button>
                                       <button onClick={() => deleteRecord(record.id)} className="p-1.5 text-outline hover:text-error hover:bg-error-container/20 rounded-lg transition-colors" title="Excluir"><Trash2 size={14} /></button>
                                     </div>
                                   </td>
@@ -742,9 +742,9 @@ export default function App() {
                                     </div>
                                   </td>
                                   <td className="py-4 px-2 text-right font-mono font-bold text-sm text-on-surface">{formatCurrency(record.sellingPrice)}</td>
-                                  <td className={`py-4 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-teal-600' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
+                                  <td className={`py-4 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
                                   <td className="py-4 px-2 text-right">
-                                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${record.profitMargin >= 15 ? 'bg-teal-100/60 text-teal-700' : record.profitMargin >= 0 ? 'bg-amber-100/60 text-amber-700' : 'bg-error-container/20 text-error'}`}>
+                                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${record.profitMargin >= 15 ? 'bg-ml-green/20 text-ml-green' : record.profitMargin >= 0 ? 'bg-amber-100/60 text-amber-700' : 'bg-error-container/20 text-error'}`}>
                                       {record.profitMargin.toFixed(2)}%
                                     </span>
                                   </td>

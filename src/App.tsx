@@ -31,7 +31,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { Product } from './types';
 import { calculatePricing, calculateCurrentMargin, ML_THRESHOLD, getEffectiveWeight } from './utils/pricing';
-import { getUniqueCategories } from './data/commissions';
+import { getUniqueCategories, getSearchableEntries } from './data/commissions';
 
 type CommentColor = 'green' | 'yellow' | 'red' | '';
 
@@ -170,6 +170,23 @@ export default function App() {
     } : p));
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    const lowerVal = val.toLowerCase();
+    
+    // Auto-detect category based on product title
+    const entries = getSearchableEntries();
+    // Sort entries by label length descending to match more specific subcategories first
+    const sortedEntries = [...entries].sort((a, b) => b.label.length - a.label.length);
+    const match = sortedEntries.find(entry => lowerVal.includes(entry.label.toLowerCase()));
+
+    setProducts(prev => prev.map(p => p.id === selectedId ? {
+      ...p,
+      name: val,
+      ...(match ? { categoryTax: match.commission } : {})
+    } : p));
+  };
+
   const addNewProduct = () => {
     const newProduct: Product = {
       ...INITIAL_PRODUCT,
@@ -278,12 +295,10 @@ export default function App() {
             <Search size={16} className="text-outline" />
             <input className="bg-transparent border-none focus:outline-none text-sm w-36 placeholder:text-outline/60" placeholder="Buscar cálculo..." type="text" />
           </div>
-          <button className="p-2 rounded-full hover:bg-surface-container transition-colors text-outline" title="Informações">
-            <Info size={20} />
-          </button>
-          <button className="p-2 rounded-full hover:bg-surface-container transition-colors text-outline" title="Configurações">
-            <Settings size={20} />
-          </button>
+      <header className="fixed top-0 w-full z-50 h-16 flex items-center px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
+        <div className="flex-1"></div>
+        <h1 className="text-xl font-bold text-primary tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
+        <div className="flex-1 flex justify-end gap-3">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
             className="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors"
@@ -291,14 +306,19 @@ export default function App() {
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <div className="h-8 w-8 ml-2 rounded-full bg-primary-container flex items-center justify-center text-white">
-            <User size={16} />
-          </div>
         </div>
       </header>
 
       {/* ── Side Nav ── */}
       <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
+        <button
+          onClick={addNewProduct}
+          className="mb-6 w-full bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-xl font-semibold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2 text-sm"
+        >
+          <Plus size={16} />
+          Novo Produto
+        </button>
+
         <div className="flex-1 space-y-2">
           <h2 className="text-primary font-headline font-bold text-xs tracking-widest uppercase opacity-60">Meus Produtos</h2>
         </div>
@@ -311,13 +331,13 @@ export default function App() {
               onClick={() => setSelectedId(p.id)}
               className={`group w-full flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-150 ${
                 selectedId === p.id
-                  ? 'bg-white text-primary shadow-sm font-bold'
-                  : 'text-slate-600 hover:bg-white/60'
+                  ? 'bg-white text-primary shadow-sm font-bold dark:bg-surface-container-highest dark:text-on-surface'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-white/10'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <LayoutDashboard size={18} className={selectedId === p.id ? 'text-primary' : 'text-slate-400'} />
-                <span className="text-sm truncate">{p.name}</span>
+                <LayoutDashboard size={18} className={selectedId === p.id ? 'text-primary dark:text-on-surface' : 'text-slate-400 dark:text-slate-500'} />
+                <span className="text-sm truncate">{p.name || 'Sem título'}</span>
               </div>
               {products.length > 1 && (
                 <button
@@ -329,34 +349,6 @@ export default function App() {
               )}
             </div>
           ))}
-
-          <button
-            onClick={() => { setSelectedId(''); }}
-            className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-white/60 rounded-lg transition-all text-sm"
-          >
-            <BarChart3 size={18} className="text-slate-400" />
-            <span>Relatórios</span>
-          </button>
-        </div>
-
-        {/* New Calculation CTA */}
-        <button
-          onClick={addNewProduct}
-          className="mt-auto w-full bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-xl font-semibold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2 text-sm"
-        >
-          <Plus size={16} />
-          Novo Cálculo
-        </button>
-
-        <div className="pt-4 mt-2 border-t border-outline-variant/20 space-y-1">
-          <button className="w-full flex items-center gap-3 px-4 py-2 text-slate-600 hover:bg-white/60 rounded-lg transition-colors text-sm">
-            <User size={18} className="text-slate-400" />
-            <span>Conta</span>
-          </button>
-          <button className="w-full flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container/20 rounded-lg transition-colors text-sm">
-            <LogOut size={18} />
-            <span>Sair</span>
-          </button>
         </div>
       </aside>
 
@@ -378,9 +370,9 @@ export default function App() {
               </span>
               <button
                 onClick={saveRecord}
-                className="px-6 py-2.5 rounded-xl bg-primary text-white font-medium shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-2 text-sm"
+                className="px-6 py-2.5 rounded-xl bg-primary text-white font-bold shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2 text-sm uppercase tracking-wide border-b-4 border-primary-fixed"
               >
-                <Save size={15} /> Salvar Simulação
+                <Plus size={16} /> ADICIONAR PRODUTO
               </button>
             </div>
           </div>
@@ -405,7 +397,7 @@ export default function App() {
                     <input
                       type="text"
                       value={product.name}
-                      onChange={(e) => setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, name: e.target.value } : p))}
+                      onChange={handleNameChange}
                       className="input-field"
                       placeholder="Ex: Smartwatch Premium Series 9"
                     />
@@ -466,10 +458,10 @@ export default function App() {
                   {/* Margem / preço atual */}
                   <div className="pt-4 border-t border-outline-variant/10">
                     <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-sm font-bold text-on-surface-variant">Meta de Lucro</h4>
+                      <h4 className="text-sm font-bold text-on-surface-variant">LUCRO/MERCADO</h4>
                       <div className="flex bg-surface-container p-1 rounded-lg">
-                        <button onClick={() => setActiveTab('reverse')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'reverse' ? 'bg-white text-primary shadow-sm' : 'text-outline'}`}>REVERSO</button>
-                        <button onClick={() => setActiveTab('current')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'current' ? 'bg-white text-primary shadow-sm' : 'text-outline'}`}>ATUAL</button>
+                        <button onClick={() => setActiveTab('reverse')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'reverse' ? 'bg-white text-primary shadow-sm' : 'text-outline'}`}>PREÇO IDEAL</button>
+                        <button onClick={() => setActiveTab('current')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'current' ? 'bg-white text-primary shadow-sm' : 'text-outline'}`}>PREÇO DE MERCADO</button>
                       </div>
                     </div>
                     {activeTab === 'reverse' ? (
@@ -560,7 +552,7 @@ export default function App() {
                     <div className="relative z-10">
                       <div className="flex items-start justify-between mb-2">
                         <span className="text-primary-fixed/70 text-xs font-bold uppercase tracking-widest">
-                          {activeTab === 'reverse' ? 'Preço de Venda Sugerido' : 'Análise de Preço Atual'}
+                          {activeTab === 'reverse' ? 'Preço Ideal' : 'Preço de Mercado'}
                         </span>
                         {pricingResult.isFreeShipping ? (
                           <span className="flex items-center gap-1 bg-green-500/25 text-green-300 px-3 py-1 rounded-full text-[10px] font-black border border-green-500/30">
@@ -612,24 +604,6 @@ export default function App() {
                       />
                       <CostRowNew label={`Imposto (${product.taxPercentage}%)`} value={pricingResult.taxes} color="bg-error" />
                     </div>
-
-                    {/* Insight panel */}
-                    <div className="mt-8 pt-6 border-t border-dashed border-outline-variant">
-                      <div className="glass-panel p-4 rounded-xl flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center flex-shrink-0">
-                          <TrendingUp size={18} className="text-tertiary" />
-                        </div>
-                        <div>
-                          <p className="text-[11px] font-bold text-tertiary uppercase tracking-tighter">Insight</p>
-                          <p className="text-xs text-on-surface-variant leading-tight mt-0.5">
-                            {pricingResult.profitMargin < product.desiredMargin
-                              ? <>Margem atual abaixo da meta. Aumente o preço ou reduza custos para atingir <strong className="text-on-surface">{product.desiredMargin}%</strong>.</>
-                              : <>Margem acima da meta de <strong className="text-on-surface">{product.desiredMargin}%</strong>. Boa rentabilidade! Considere testar um preço competitivo.</>
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -651,11 +625,11 @@ export default function App() {
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left border-separate border-spacing-y-1 px-4">
+                    <table className="w-full text-left border-separate border-spacing-y-1 px-4 table-fixed min-w-[1200px]">
                       <thead>
                         <tr className="text-[10px] font-bold text-outline uppercase tracking-widest">
-                          <th className="pb-3 pl-4">Produto</th>
-                          <th className="pb-3">Link</th>
+                          <th className="pb-3 pl-4 w-[160px]">Produto</th>
+                          <th className="pb-3 w-[100px]">Link</th>
                           <th className="pb-3 text-right">Custo</th>
                           <th className="pb-3 text-right">Embal.</th>
                           <th className="pb-3 text-right">Comissão%</th>
@@ -679,7 +653,7 @@ export default function App() {
                             <tr key={record.id} className={`bg-surface-container-lowest hover:bg-surface-container-high transition-colors ${borderColor}`}>
                               {isEditing ? (
                                 <>
-                                  <td className="py-3 pl-4 rounded-l-xl max-w-[140px]">
+                                  <td className="py-3 pl-4 rounded-l-xl w-[160px]">
                                     <input type="text" value={record.name} onChange={e => updateRecord(record.id, 'name', e.target.value)}
                                       className="w-full text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
                                   </td>
@@ -734,12 +708,12 @@ export default function App() {
                                 </>
                               ) : (
                                 <>
-                                  <td className="py-4 pl-4 rounded-l-xl max-w-[140px]">
-                                    <div className="flex items-center gap-3">
-                                      <div className="w-8 h-8 rounded bg-surface-container flex items-center justify-center flex-shrink-0">
-                                        <Package size={14} className="text-outline" />
+                                  <td className="py-4 pl-4 rounded-l-xl w-[160px] max-w-[160px]">
+                                    <div className="flex items-center gap-2 w-full overflow-hidden">
+                                      <div className="w-6 h-6 rounded bg-surface-container flex items-center justify-center flex-shrink-0">
+                                        <Package size={12} className="text-outline" />
                                       </div>
-                                      <span className="text-sm font-bold truncate" title={record.name}>{record.name}</span>
+                                      <span className="text-sm font-bold truncate block w-full whitespace-nowrap overflow-hidden text-ellipsis" title={record.name}>{record.name}</span>
                                     </div>
                                   </td>
                                   <td className="py-4 px-2">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Calculator,
   TrendingUp,
@@ -14,11 +14,15 @@ import {
   Save,
   Pencil,
   Check,
-  ExternalLink
+  ExternalLink,
+  ChevronDown,
+  Search,
+  Tag
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product } from './types';
 import { calculatePricing, calculateCurrentMargin, ML_THRESHOLD, getEffectiveWeight } from './utils/pricing';
+import { getUniqueCategories } from './data/commissions';
 
 type CommentColor = 'green' | 'yellow' | 'red' | '';
 
@@ -366,38 +370,31 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="label-text">Comissão ML (%)</label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      name="categoryTax"
-                      value={product.categoryTax}
-                      onChange={handleInputChange}
-                      className="input-field pr-8"
-                      step="0.1"
-                      min="0"
-                      max="99"
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">%</span>
-                  </div>
-                </div>
-                <div>
-                  <label className="label-text">Imposto (%)</label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      name="taxPercentage"
-                      value={product.taxPercentage}
-                      onChange={handleInputChange}
-                      className="input-field pr-8"
-                      step="0.1"
-                      min="0"
-                      max="99"
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">%</span>
-                  </div>
+              {/* Category Selector */}
+              <CategorySelector
+                currentCommission={product.categoryTax}
+                onSelectCategory={(commission) => {
+                  setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: commission } : p));
+                }}
+                onManualChange={(value) => {
+                  setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: value } : p));
+                }}
+              />
+
+              <div>
+                <label className="label-text">Imposto (%)</label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    name="taxPercentage"
+                    value={product.taxPercentage}
+                    onChange={handleInputChange}
+                    className="input-field pr-8"
+                    step="0.1"
+                    min="0"
+                    max="99"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">%</span>
                 </div>
               </div>
 
@@ -934,6 +931,140 @@ function CostRow({ label, value, icon, highlight = false }: { label: string, val
       <span className={`font-mono text-sm font-bold ${highlight ? 'text-brand-700' : 'text-slate-900'}`}>
         - {formatCurrency(value)}
       </span>
+    </div>
+  );
+}
+
+function CategorySelector({
+  currentCommission,
+  onSelectCategory,
+  onManualChange,
+}: {
+  currentCommission: number;
+  onSelectCategory: (commission: number) => void;
+  onManualChange: (value: number) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [selectedLabel, setSelectedLabel] = useState('');
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const categories = useMemo(() => getUniqueCategories(), []);
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return categories;
+    const q = search.toLowerCase();
+    return categories.filter(c => c.label.toLowerCase().includes(q));
+  }, [categories, search]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  return (
+    <div className="space-y-3">
+      <label className="label-text flex items-center gap-1.5">
+        <Tag size={12} className="text-brand-500" />
+        Categoria ML → Comissão
+      </label>
+
+      <div className="relative" ref={dropdownRef}>
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-medium text-slate-700 hover:border-brand-300 hover:bg-slate-50 transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+        >
+          <span className={selectedLabel ? 'text-slate-900' : 'text-slate-400'}>
+            {selectedLabel || 'Selecione a categoria...'}
+          </span>
+          <div className="flex items-center gap-2">
+            {selectedLabel && (
+              <span className="bg-brand-100 text-brand-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                {currentCommission}%
+              </span>
+            )}
+            <ChevronDown size={16} className={`text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          </div>
+        </button>
+
+        {isOpen && (
+          <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden">
+            <div className="p-2 border-b border-slate-100">
+              <div className="relative">
+                <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full pl-8 pr-3 py-2 text-sm border border-slate-200 rounded-lg bg-slate-50 outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder-slate-400"
+                  placeholder="Buscar categoria..."
+                />
+              </div>
+            </div>
+            <div className="max-h-48 overflow-y-auto custom-scrollbar">
+              {filtered.length === 0 ? (
+                <div className="px-3 py-4 text-center text-sm text-slate-400">
+                  Nenhuma categoria encontrada
+                </div>
+              ) : (
+                filtered.map(cat => (
+                  <button
+                    key={cat.label}
+                    type="button"
+                    onClick={() => {
+                      onSelectCategory(cat.commission);
+                      setSelectedLabel(cat.label);
+                      setIsOpen(false);
+                      setSearch('');
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 text-sm text-left hover:bg-brand-50 transition-colors ${
+                      selectedLabel === cat.label ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-slate-700'
+                    }`}
+                  >
+                    <span className="truncate">{cat.label}</span>
+                    <span className="flex-shrink-0 ml-2 text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+                      {cat.commission}%
+                    </span>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <label className="label-text text-[10px]">Comissão ML (%)</label>
+        <div className="relative">
+          <input
+            type="number"
+            value={currentCommission}
+            onChange={e => {
+              onManualChange(parseFloat(e.target.value) || 0);
+              setSelectedLabel('');
+            }}
+            className="input-field pr-8"
+            step="0.1"
+            min="0"
+            max="99"
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">%</span>
+        </div>
+      </div>
     </div>
   );
 }

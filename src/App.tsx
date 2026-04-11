@@ -704,12 +704,12 @@ export default function App() {
                     <tr key={record.id} className={`border-b border-slate-50 border-l-4 ${colorBorder} hover:bg-slate-50/50 transition-colors`}>
                       {isEditing ? (
                         <>
-                          <td className="px-4 py-2">
+                          <td className="px-4 py-2 max-w-[140px]">
                             <input
                               type="text"
                               value={record.name}
                               onChange={e => updateRecord(record.id, 'name', e.target.value)}
-                              className="w-full min-w-[100px] text-sm py-1 px-2 rounded-md border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                              className="w-full text-sm py-1 px-2 rounded-md border border-slate-200 bg-white outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                             />
                           </td>
                           <td className="px-3 py-2">
@@ -822,7 +822,9 @@ export default function App() {
                         </>
                       ) : (
                         <>
-                          <td className="px-4 py-3 font-semibold text-slate-900">{record.name}</td>
+                          <td className="px-4 py-3 font-semibold text-slate-900 max-w-[140px]">
+                            <span className="block truncate" title={record.name}>{record.name}</span>
+                          </td>
                           <td className="px-3 py-3">
                             {record.link ? (
                               <a

@@ -35,6 +35,52 @@ import { getUniqueCategories, getSearchableEntries } from './data/commissions';
 
 type CommentColor = 'green' | 'yellow' | 'red' | '';
 
+function NumberInput({ value, onChange, onBlur, onFocus, className, ...props }: any) {
+  const [localValue, setLocalValue] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (localValue !== null) {
+      const parsed = parseFloat(localValue);
+      if (parsed === value || (localValue === '' && value === 0) || (isNaN(parsed) && value === 0)) {
+        // It's a match with intermediate typing state
+      } else {
+        setLocalValue(null); // External value changed, reset local sync
+      }
+    }
+  }, [value, localValue]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalValue(e.target.value);
+    if (onChange) onChange(e);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setLocalValue(null);
+    if (onBlur) onBlur(e);
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.select();
+    if (onFocus) onFocus(e);
+  };
+
+  const displayValue = localValue !== null ? localValue : (value === 0 ? '' : value);
+
+  return (
+    <input
+      type="number"
+      value={displayValue}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onFocus={handleFocus}
+      placeholder="0"
+      className={className}
+      {...props}
+    />
+  );
+}
+
+
 interface SavedRecord {
   id: string;
   name: string;
@@ -170,11 +216,6 @@ export default function App() {
       ...p,
       [name]: isNaN(parsed) ? 0 : parsed
     } : p));
-  };
-
-  // Select all text on focus so the user can just type over the current value
-  const handleNumberFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.select();
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -413,14 +454,14 @@ export default function App() {
                       <label className="label-text">Custo do Produto (R$)</label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                        <input type="number" name="cost" value={product.cost} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pl-10" step="0.01" min="0" />
+                        <NumberInput name="cost" value={product.cost} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
                       </div>
                     </div>
                     <div>
                       <label className="label-text">Embalagem (R$)</label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                        <input type="number" name="packaging" value={product.packaging} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pl-10" step="0.01" min="0" />
+                        <NumberInput name="packaging" value={product.packaging} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
                       </div>
                     </div>
                   </div>
@@ -439,7 +480,7 @@ export default function App() {
                   <div>
                     <label className="label-text">Imposto (%)</label>
                     <div className="relative">
-                      <input type="number" name="taxPercentage" value={product.taxPercentage} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pr-8" step="0.1" min="0" max="99" />
+                      <NumberInput name="taxPercentage" value={product.taxPercentage} onChange={handleInputChange} className="input-field pr-8" step="0.1" min="0" max="99" />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
                     </div>
                   </div>
@@ -457,7 +498,7 @@ export default function App() {
                       <div>
                         <label className="label-text">Margem Desejada (%)</label>
                         <div className="relative">
-                          <input type="number" name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} onFocus={handleNumberFocus} className="input-field pr-8 text-lg font-bold" />
+                          <NumberInput name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} className="input-field pr-8 text-lg font-bold" />
                           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
                         </div>
                       </div>
@@ -466,7 +507,7 @@ export default function App() {
                         <label className="label-text">Preço de Venda Atual (R$)</label>
                         <div className="relative">
                           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                          <input type="number" value={currentPrice} onChange={(e) => setCurrentPrice(parseFloat(e.target.value) || 0)} onFocus={handleNumberFocus} className="input-field pl-10 text-lg font-bold" step="0.01" />
+                          <NumberInput value={currentPrice} onChange={(e: any) => setCurrentPrice(parseFloat(e.target.value) || 0)} className="input-field pl-10 text-lg font-bold" step="0.01" />
                         </div>
                       </div>
                     )}
@@ -487,7 +528,7 @@ export default function App() {
                       ].map(f => (
                         <div key={f.name}>
                           <label className="block text-[10px] font-bold text-outline mb-1 uppercase">{f.label}</label>
-                          <input type="number" name={f.name} value={(product as any)[f.name]} onChange={handleInputChange} onFocus={handleNumberFocus} step={f.step} min="0" className="w-full bg-transparent border-b border-outline/20 focus:border-primary focus:outline-none py-1 text-sm font-bold" />
+                          <NumberInput name={f.name} value={(product as any)[f.name]} onChange={handleInputChange} step={f.step} min="0" className="w-full bg-transparent border-b border-outline/20 focus:border-primary focus:outline-none py-1 text-sm font-bold" />
                         </div>
                       ))}
                     </div>
@@ -510,13 +551,13 @@ export default function App() {
                         <div>
                           <label className="label-text">Taxa Fixa (&lt;79)</label>
                           <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                            <input type="number" name="fixedFee" value={product.fixedFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
+                            <NumberInput name="fixedFee" value={product.fixedFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
                           </div>
                         </div>
                         <div>
                           <label className="label-text">Frete Grátis (&ge;79)</label>
                           <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                            <input type="number" name="shippingFee" value={product.shippingFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
+                            <NumberInput name="shippingFee" value={product.shippingFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
                           </div>
                         </div>
                       </div>
@@ -651,24 +692,24 @@ export default function App() {
                                       className="w-28 text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
                                   </td>
                                   <td className="py-3 px-2">
-                                    <input type="number" value={record.cost} onChange={e => updateRecord(record.id, 'cost', parseFloat(e.target.value) || 0)} step="0.01" min="0"
+                                    <NumberInput value={record.cost} onChange={(e: any) => updateRecord(record.id, 'cost', parseFloat(e.target.value) || 0)} step="0.01" min="0"
                                       className="w-20 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
                                   </td>
                                   <td className="py-3 px-2">
-                                    <input type="number" value={record.packaging} onChange={e => updateRecord(record.id, 'packaging', parseFloat(e.target.value) || 0)} step="0.01" min="0"
+                                    <NumberInput value={record.packaging} onChange={(e: any) => updateRecord(record.id, 'packaging', parseFloat(e.target.value) || 0)} step="0.01" min="0"
                                       className="w-20 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
                                   </td>
                                   <td className="py-3 px-2">
-                                    <input type="number" value={record.categoryTax} onChange={e => updateRecord(record.id, 'categoryTax', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
+                                    <NumberInput value={record.categoryTax} onChange={(e: any) => updateRecord(record.id, 'categoryTax', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
                                       className="w-16 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
                                   </td>
                                   <td className="py-3 px-2">
-                                    <input type="number" value={record.taxPercentage} onChange={e => updateRecord(record.id, 'taxPercentage', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
+                                    <NumberInput value={record.taxPercentage} onChange={(e: any) => updateRecord(record.id, 'taxPercentage', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
                                       className="w-16 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
                                   </td>
                                   <td className="py-3 px-2">
                                     <div className="flex items-center">
-                                      <input type="number" value={record.desiredMargin} onChange={e => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)} step="0.5" min="1" max="50"
+                                      <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)} step="0.5" min="1" max="50"
                                         className="w-14 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
                                       <span className="text-xs text-outline ml-0.5">%</span>
                                     </div>
@@ -722,7 +763,7 @@ export default function App() {
                                   <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{record.taxPercentage}%</td>
                                   <td className="py-4 px-2">
                                     <div className="flex items-center justify-end">
-                                      <input type="number" value={record.desiredMargin} onChange={e => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)}
+                                      <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)}
                                         step="0.5" min="1" max="50"
                                         className="w-12 text-xs text-right font-mono font-semibold py-0.5 px-1 rounded border border-outline-variant/60 bg-white outline-none focus:ring-1 focus:ring-primary/30" />
                                       <span className="text-xs text-outline ml-0.5">%</span>
@@ -881,8 +922,8 @@ function CategorySelector({
         <div>
           <label className="label-text text-[10px]">Comissão %</label>
           <div className="relative">
-            <input type="number" value={currentCommission}
-              onChange={e => { onManualChange(parseFloat(e.target.value) || 0); setSelectedLabel(''); }}
+            <NumberInput value={currentCommission}
+              onChange={(e: any) => { onManualChange(parseFloat(e.target.value) || 0); setSelectedLabel(''); }}
               className="input-field pr-8 font-medium" step="0.1" min="0" max="99" />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
           </div>

@@ -667,8 +667,8 @@ export default function App() {
                           <th className="pb-3 text-right">Margem%</th>
                           <th className="pb-3 text-right">Preço Venda</th>
                           <th className="pb-3 text-right">Lucro</th>
-                          <th className="pb-3 text-right">Margem Real</th>
-                          <th className="pb-3">Comentário</th>
+                          <th className="pb-3 text-right pr-6">Margem Real</th>
+                          <th className="pb-3 pl-6 w-[180px]">Comentário</th>
                           <th className="pb-3 text-right pr-4">Ações</th>
                         </tr>
                       </thead>
@@ -716,8 +716,8 @@ export default function App() {
                                   </td>
                                   <td className="py-3 px-2 text-right font-mono font-bold text-on-surface text-sm">{formatCurrency(record.sellingPrice)}</td>
                                   <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
-                                  <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
-                                  <td className="py-3 px-2">
+                                  <td className={`py-3 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
+                                  <td className="py-3 px-2 pl-6">
                                     <div className="flex flex-col gap-1.5">
                                       <input type="text" value={record.comment} onChange={e => updateRecord(record.id, 'comment', e.target.value)} placeholder="Comentário..."
                                         className="w-full min-w-[100px] text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
@@ -771,12 +771,10 @@ export default function App() {
                                   </td>
                                   <td className="py-4 px-2 text-right font-mono font-bold text-sm text-on-surface">{formatCurrency(record.sellingPrice)}</td>
                                   <td className={`py-4 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
-                                  <td className="py-4 px-2 text-right">
-                                    <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${record.profitMargin >= 15 ? 'bg-ml-green/20 text-ml-green' : record.profitMargin >= 0 ? 'bg-amber-100/60 text-amber-700' : 'bg-error-container/20 text-error'}`}>
-                                      {record.profitMargin.toFixed(2)}%
-                                    </span>
+                                  <td className={`py-4 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>
+                                    {record.profitMargin.toFixed(2)}%
                                   </td>
-                                  <td className="py-4 px-2">
+                                  <td className="py-4 px-2 pl-6">
                                     {record.comment ? (
                                       <div className="flex items-center gap-1.5">
                                         {record.commentColor && (

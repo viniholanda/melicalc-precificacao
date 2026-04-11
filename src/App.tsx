@@ -487,11 +487,11 @@ export default function App() {
 
                   {/* Margem / preço atual */}
                   <div className="pt-4 border-t border-outline-variant/10">
-                    <div className="flex flex-col gap-4 mb-4">
+                    <div className="flex items-center justify-between mb-4">
                       <h4 className="text-base font-extrabold text-primary uppercase tracking-wide">Lucro / Mercado</h4>
-                      <div className="flex gap-4">
-                        <button onClick={() => setActiveTab('reverse')} className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all text-sm uppercase tracking-wide ${activeTab === 'reverse' ? 'bg-primary text-white shadow-xl hover:shadow-primary/40 border-b-4 border-primary-fixed' : 'bg-surface-container text-on-surface-variant hover:bg-surface-variant'}`}>PREÇO IDEAL</button>
-                        <button onClick={() => setActiveTab('current')} className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all text-sm uppercase tracking-wide ${activeTab === 'current' ? 'bg-primary text-white shadow-xl hover:shadow-primary/40 border-b-4 border-primary-fixed' : 'bg-surface-container text-on-surface-variant hover:bg-surface-variant'}`}>PREÇO DE MERCADO</button>
+                      <div className="flex bg-surface-container p-1 rounded-xl">
+                        <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO IDEAL</button>
+                        <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
                       </div>
                     </div>
                     {activeTab === 'reverse' ? (
@@ -659,17 +659,17 @@ export default function App() {
                       <thead>
                         <tr className="text-[10px] font-bold text-outline uppercase tracking-widest">
                           <th className="pb-3 pl-4 w-[160px]">Produto</th>
-                          <th className="pb-3 w-[100px]">Link</th>
-                          <th className="pb-3 text-right">Custo</th>
-                          <th className="pb-3 text-right">Embal.</th>
-                          <th className="pb-3 text-right">Comissão%</th>
-                          <th className="pb-3 text-right">Imposto%</th>
-                          <th className="pb-3 text-right">Margem%</th>
-                          <th className="pb-3 text-right">Preço Venda</th>
-                          <th className="pb-3 text-right">Lucro</th>
-                          <th className="pb-3 text-right pr-6">Margem Real</th>
-                          <th className="pb-3 pl-6 w-[180px]">Comentário</th>
-                          <th className="pb-3 text-right pr-4">Ações</th>
+                          <th className="pb-3 px-2 w-[100px]">Link</th>
+                          <th className="pb-3 px-2 text-right">Custo</th>
+                          <th className="pb-3 px-2 text-right">Embal.</th>
+                          <th className="pb-3 px-2 text-right">Comissão%</th>
+                          <th className="pb-3 px-2 text-right">Imposto%</th>
+                          <th className="pb-3 px-2 text-right">Margem%</th>
+                          <th className="pb-3 px-2 text-right">Preço Venda</th>
+                          <th className="pb-3 px-2 text-right">Lucro</th>
+                          <th className="pb-3 px-2 pr-6 text-right">Margem Real</th>
+                          <th className="pb-3 px-2 pl-6 w-[180px]">Comentário</th>
+                          <th className="pb-3 pr-4 text-right">Ações</th>
                         </tr>
                       </thead>
                       <tbody>

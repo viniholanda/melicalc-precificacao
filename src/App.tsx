@@ -257,6 +257,17 @@ export default function App() {
   };
 
   const saveRecord = () => {
+    const missingFields: string[] = [];
+    if (!product.name.trim() || product.name === 'Novo Produto') missingFields.push('Nome do Produto');
+    if (!product.link.trim()) missingFields.push('Link Mercado Livre');
+    if (product.cost <= 0) missingFields.push('Custo do Produto');
+    if (product.categoryTax <= 0) missingFields.push('Tarifa Mercado Livre (%)');
+
+    if (missingFields.length > 0) {
+      alert(`Por favor, preencha os seguintes campos antes de adicionar o produto:\n\n- ${missingFields.join('\n- ')}`);
+      return;
+    }
+
     const record: SavedRecord = {
       id: Date.now().toString(),
       name: product.name,
@@ -435,7 +446,7 @@ export default function App() {
 
                   {/* Link */}
                   <div>
-                    <label className="label-text">Link Mercado Livre (Opcional)</label>
+                    <label className="label-text">Link Mercado Livre (Obrigatório)</label>
                     <div className="relative">
                       <ExternalLink size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-outline" />
                       <input
@@ -468,7 +479,7 @@ export default function App() {
 
                   {/* Category & Commission */}
                   <div className="pt-4 border-t border-outline-variant/10">
-                    <h4 className="text-base font-extrabold text-primary mb-4 uppercase tracking-wide">Comissão e Logística</h4>
+                    <h4 className="text-base font-extrabold text-primary mb-4 uppercase tracking-wide">Tarifa Mercado Livre</h4>
                     <CategorySelector
                       currentCommission={product.categoryTax}
                       onSelectCategory={(commission) => setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: commission } : p))}
@@ -662,7 +673,7 @@ export default function App() {
                           <th className="pb-3 px-2 w-[100px]">Link</th>
                           <th className="pb-3 px-2 text-right">Custo</th>
                           <th className="pb-3 px-2 text-right">Embal.</th>
-                          <th className="pb-3 px-2 text-right">Comissão%</th>
+                          <th className="pb-3 px-2 text-right">Tarifa%</th>
                           <th className="pb-3 px-2 text-right">Imposto%</th>
                           <th className="pb-3 px-2 text-right">Margem%</th>
                           <th className="pb-3 px-2 text-right">Preço Venda</th>

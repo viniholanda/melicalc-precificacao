@@ -490,7 +490,7 @@ export default function App() {
                     <div className="flex items-center justify-between mb-4">
                       <h4 className="text-base font-extrabold text-primary uppercase tracking-wide">Lucro / Mercado</h4>
                       <div className="flex bg-surface-container p-1 rounded-xl">
-                        <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO IDEAL</button>
+                        <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
                         <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
                       </div>
                     </div>
@@ -582,7 +582,7 @@ export default function App() {
                     <div className="relative z-10">
                       <div className="flex items-start justify-between mb-2">
                         <span className="text-primary-fixed/70 text-xs font-bold uppercase tracking-widest">
-                          {activeTab === 'reverse' ? 'Preço Ideal' : 'Preço de Mercado'}
+                          {activeTab === 'reverse' ? 'Preço Objetivo' : 'Preço de Mercado'}
                         </span>
                         {pricingResult.isFreeShipping ? (
                           <span className="flex items-center gap-1 bg-green-500/25 text-green-300 px-3 py-1 rounded-full text-[10px] font-black border border-green-500/30">

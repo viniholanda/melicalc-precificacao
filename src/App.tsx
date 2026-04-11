@@ -25,6 +25,8 @@ import {
   Download,
   Filter,
   Calculator,
+  Moon,
+  Sun,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product } from './types';
@@ -101,6 +103,21 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string>(products[0]?.id || '1');
   const [currentPrice, setCurrentPrice] = useState<number>(289.90);
   const [activeTab, setActiveTab] = useState<'reverse' | 'current'>('reverse');
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem('meli-theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      localStorage.setItem('meli-theme', 'dark');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('meli-theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const [savedRecords, setSavedRecords] = useState<SavedRecord[]>(() => {
     try {
@@ -247,7 +264,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background">
       {/* ── Top App Bar ── */}
-      <header className="fixed top-0 w-full z-50 h-16 flex items-center justify-between px-6 bg-[#f8f9fb] border-b border-outline-variant/20">
+      <header className="fixed top-0 w-full z-50 h-16 flex items-center justify-between px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
         <div className="flex items-center gap-8">
           <h1 className="text-xl font-bold text-primary tracking-wide font-headline">MeliCalc</h1>
           <nav className="hidden md:flex items-center gap-6">
@@ -261,21 +278,28 @@ export default function App() {
             <Search size={16} className="text-outline" />
             <input className="bg-transparent border-none focus:outline-none text-sm w-36 placeholder:text-outline/60" placeholder="Buscar cálculo..." type="text" />
           </div>
-          <button className="p-2 rounded-full hover:bg-surface-container transition-colors text-outline">
+          <button className="p-2 rounded-full hover:bg-surface-container transition-colors text-outline" title="Informações">
             <Info size={20} />
           </button>
-          <button className="p-2 rounded-full hover:bg-surface-container transition-colors text-outline">
+          <button className="p-2 rounded-full hover:bg-surface-container transition-colors text-outline" title="Configurações">
             <Settings size={20} />
           </button>
-          <div className="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-white">
+          <button 
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors"
+            title="Alternar Tema"
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <div className="h-8 w-8 ml-2 rounded-full bg-primary-container flex items-center justify-center text-white">
             <User size={16} />
           </div>
         </div>
       </header>
 
       {/* ── Side Nav ── */}
-      <aside className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-[#f1f3f6] flex flex-col p-4 space-y-1 z-40">
-        <div className="mb-4 px-2">
+      <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
+        <div className="flex-1 space-y-2">
           <h2 className="text-primary font-headline font-bold text-xs tracking-widest uppercase opacity-60">Meus Produtos</h2>
         </div>
 

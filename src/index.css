@@ -7,25 +7,25 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* Primary */
-  --color-primary: #003d9b;
-  --color-primary-container: #0052cc;
+  --color-primary: #333333;
+  --color-primary-container: #1a1a1a; /* darker gray */
   --color-on-primary: #ffffff;
-  --color-primary-fixed: #dae2ff;
-  --color-primary-fixed-dim: #b2c5ff;
-  --color-inverse-primary: #b2c5ff;
-  --color-surface-tint: #0c56d0;
+  --color-primary-fixed: #e5e5e5;
+  --color-primary-fixed-dim: #cccccc;
+  --color-inverse-primary: #e5e5e5;
+  --color-surface-tint: #333333;
 
   /* Secondary */
-  --color-secondary: #705d00;
-  --color-secondary-container: #fdd400;
-  --color-secondary-fixed: #ffe170;
-  --color-secondary-fixed-dim: #e9c400;
+  --color-secondary: #998a00;
+  --color-secondary-container: #FFE600;
+  --color-secondary-fixed: #FFE600;
+  --color-secondary-fixed-dim: #e6cf00;
 
   /* Tertiary */
-  --color-tertiary: #004b59;
-  --color-tertiary-container: #006477;
-  --color-tertiary-fixed: #afecff;
-  --color-tertiary-fixed-dim: #48d7f9;
+  --color-tertiary: #00A650;
+  --color-tertiary-container: #00803e;
+  --color-tertiary-fixed: #83ffba;
+  --color-tertiary-fixed-dim: #5bf5a0;
 
   /* Error */
   --color-error: #ba1a1a;
@@ -34,40 +34,97 @@
   --color-on-error-container: #93000a;
 
   /* Surface */
-  --color-background: #f8f9fb;
-  --color-surface: #f8f9fb;
-  --color-surface-dim: #d9dadc;
-  --color-surface-bright: #f8f9fb;
+  --color-background: #F4F4F4;
+  --color-surface: #F4F4F4;
+  --color-surface-dim: #e5e5e5;
+  --color-surface-bright: #fafafa;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f3f4f6;
-  --color-surface-container: #edeef0;
-  --color-surface-container-high: #e7e8ea;
-  --color-surface-container-highest: #e1e2e4;
-  --color-surface-variant: #e1e2e4;
+  --color-surface-container-low: #fafafa;
+  --color-surface-container: #F4F4F4;
+  --color-surface-container-high: #ededed;
+  --color-surface-container-highest: #e3e3e3;
+  --color-surface-variant: #E5E7EB;
 
   /* On colors */
-  --color-on-surface: #191c1e;
-  --color-on-surface-variant: #434654;
-  --color-on-background: #191c1e;
-  --color-on-secondary: #ffffff;
+  --color-on-surface: #111111;
+  --color-on-surface-variant: #4b5563;
+  --color-on-background: #111111;
+  --color-on-secondary: #111111;
   --color-on-tertiary: #ffffff;
 
   /* Outline */
-  --color-outline: #737685;
-  --color-outline-variant: #c3c6d6;
+  --color-outline: #9ca3af;
+  --color-outline-variant: #E5E7EB;
 
   /* Inverse */
-  --color-inverse-surface: #2e3132;
-  --color-inverse-on-surface: #f0f1f3;
+  --color-inverse-surface: #2b2b2b;
+  --color-inverse-on-surface: #f4f4f4;
 
   /* ML brand */
-  --color-ml-yellow: #fff159;
+  --color-ml-yellow: #FFE600;
   --color-ml-blue: #3483fa;
+  --color-ml-green: #00A650;
 }
 
 @layer base {
   body {
-    @apply bg-background text-on-surface antialiased font-sans;
+    @apply bg-background text-on-surface antialiased font-sans transition-colors duration-300;
+  }
+  
+  .dark {
+    /* Primary */
+    --color-primary: #FFE600;
+    --color-primary-container: #444444; 
+    --color-on-primary: #111111;
+    --color-primary-fixed: #333333;
+    --color-primary-fixed-dim: #222222;
+    --color-inverse-primary: #FFE600;
+    --color-surface-tint: #FFE600;
+
+    /* Secondary */
+    --color-secondary: #e6cf00;
+    --color-secondary-container: #665c00;
+    --color-secondary-fixed: #FFE600;
+    --color-secondary-fixed-dim: #ccb800;
+
+    /* Tertiary (ML Green) */
+    --color-tertiary: #00A650;
+    --color-tertiary-container: #00803e;
+    --color-tertiary-fixed: #83ffba;
+    --color-tertiary-fixed-dim: #00A650;
+
+    /* Error */
+    --color-error: #ffb4ab;
+    --color-error-container: #93000a;
+    --color-on-error: #690005;
+    --color-on-error-container: #ffdad6;
+
+    /* Surface */
+    --color-background: #121212;
+    --color-surface: #121212;
+    --color-surface-dim: #000000;
+    --color-surface-bright: #1f1f1f;
+    --color-surface-container-lowest: #0a0a0a;
+    --color-surface-container-low: #151515;
+    --color-surface-container: #1a1a1a;
+    --color-surface-container-high: #222222;
+    --color-surface-container-highest: #2b2b2b;
+    --color-surface-variant: #333333;
+
+    /* On colors */
+    --color-on-surface: #e5e5e5;
+    --color-on-surface-variant: #c3c6cf;
+    --color-on-background: #e5e5e5;
+    --color-on-secondary: #000000;
+    --color-on-tertiary: #ffffff;
+
+    /* Outline */
+    --color-outline: #8e9199;
+    --color-outline-variant: #44474e;
+
+    /* Inverse */
+    --color-inverse-surface: #e5e5e5;
+    --color-inverse-on-surface: #121212;
   }
 }
 
@@ -81,15 +138,15 @@
   }
 
   .nav-btn {
-    @apply w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-white/60 rounded-lg transition-all duration-200 text-sm;
+    @apply w-full flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-white/10 rounded-lg transition-all duration-200 text-sm;
   }
 
   .nav-btn-active {
-    @apply w-full flex items-center gap-3 px-4 py-3 bg-white text-primary rounded-lg shadow-sm font-bold transition-all duration-200 text-sm;
+    @apply w-full flex items-center gap-3 px-4 py-3 bg-white dark:bg-surface-container-highest text-primary dark:text-on-surface rounded-lg shadow-sm font-bold transition-all duration-200 text-sm;
   }
 
   .card {
-    @apply bg-surface-container-lowest rounded-xl shadow-none p-8;
+    @apply bg-surface-container-lowest rounded-xl shadow-none p-8 transition-colors duration-300;
   }
 }
 
@@ -97,8 +154,15 @@
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #c3c6d6; border-radius: 9999px; }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #737685; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #44474e; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #5c5f66; }
 
 .glass-panel {
   background: rgba(225, 226, 228, 0.6);
   backdrop-filter: blur(12px);
+  transition: background-color 0.3s ease;
+}
+
+.dark .glass-panel {
+  background: rgba(43, 43, 43, 0.6);
 }

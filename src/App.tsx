@@ -358,7 +358,7 @@ export default function App() {
       <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
         <button
           onClick={addNewProduct}
-          className="mb-6 w-full bg-black dark:bg-zinc-700 text-white py-3 rounded-xl font-semibold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2 text-sm dark:border dark:border-white/30"
+          className="mb-6 w-full bg-black dark:bg-white text-white dark:text-black py-3 rounded-xl font-semibold shadow-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 text-sm"
         >
           <Plus size={16} />
           Novo Produto
@@ -651,7 +651,7 @@ export default function App() {
 
                   <button
                     onClick={saveRecord}
-                    className="w-full py-3 rounded-xl bg-primary text-white font-bold shadow-xl hover:shadow-primary/40 transition-all text-sm uppercase tracking-wide border-b-4 border-primary-fixed"
+                    className="w-full py-3 rounded-xl bg-primary text-white font-bold shadow-xl hover:bg-zinc-700 dark:hover:bg-surface-container-highest hover:shadow-primary/40 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 text-sm uppercase tracking-wide border-b-4 border-primary-fixed"
                   >
                     ADICIONAR PRODUTO
                   </button>
@@ -782,7 +782,7 @@ export default function App() {
                                   <td className="py-4 px-2">
                                     {record.link ? (
                                       <a href={record.link} target="_blank" rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1.5 text-primary hover:underline max-w-[120px]" title={record.link}>
+                                        className="inline-flex items-center gap-1.5 text-primary dark:text-white hover:underline max-w-[120px]" title={record.link}>
                                         <ExternalLink size={12} className="flex-shrink-0" />
                                         <span className="truncate text-xs font-medium">
                                           {(() => { try { return new URL(record.link).hostname.replace('www.', ''); } catch { return record.link; } })()}

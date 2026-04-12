@@ -607,7 +607,7 @@ export default function App() {
                           </span>
                         )}
                       </div>
-                      <div className="text-5xl font-black tracking-tight mt-2 leading-none">
+                      <div className="text-6xl font-black tracking-tight mt-2 leading-none">
                         {formatCurrency(pricingResult.sellingPrice)}
                       </div>
                       <div className="mt-8 grid grid-cols-2 gap-4">

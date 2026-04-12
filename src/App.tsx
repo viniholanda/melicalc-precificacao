@@ -409,12 +409,6 @@ export default function App() {
               <span className="flex items-center gap-1.5 text-xs font-medium text-outline border border-outline-variant/30 px-4 py-2 rounded-xl">
                 <Info size={13} /> Limiar Frete: <strong className="text-on-surface">{formatCurrency(ML_THRESHOLD)}</strong>
               </span>
-              <button
-                onClick={saveRecord}
-                className="px-6 py-2.5 rounded-xl bg-primary text-white font-bold shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2 text-sm uppercase tracking-wide border-b-4 border-primary-fixed"
-              >
-                <Plus size={16} /> ADICIONAR PRODUTO
-              </button>
             </div>
           </div>
 
@@ -654,6 +648,13 @@ export default function App() {
                       <CostRowNew label={`Imposto (${product.taxPercentage}%)`} value={pricingResult.taxes} color="bg-error" />
                     </div>
                   </div>
+
+                  <button
+                    onClick={saveRecord}
+                    className="w-full py-3 rounded-xl bg-primary text-white font-bold shadow-xl hover:shadow-primary/40 transition-all text-sm uppercase tracking-wide border-b-4 border-primary-fixed"
+                  >
+                    ADICIONAR PRODUTO
+                  </button>
                 </motion.div>
               </AnimatePresence>
             </section>

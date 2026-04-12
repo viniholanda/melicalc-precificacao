@@ -73,19 +73,19 @@
   
   .dark {
     /* Primary */
-    --color-primary: #FFE600;
-    --color-primary-container: #444444; 
-    --color-on-primary: #111111;
-    --color-primary-fixed: #333333;
-    --color-primary-fixed-dim: #222222;
-    --color-inverse-primary: #FFE600;
-    --color-surface-tint: #FFE600;
+    --color-primary: #111111;
+    --color-primary-container: #2a2a2a;
+    --color-on-primary: #ffffff;
+    --color-primary-fixed: #444444;
+    --color-primary-fixed-dim: #333333;
+    --color-inverse-primary: #111111;
+    --color-surface-tint: #111111;
 
     /* Secondary */
-    --color-secondary: #e6cf00;
-    --color-secondary-container: #665c00;
-    --color-secondary-fixed: #FFE600;
-    --color-secondary-fixed-dim: #ccb800;
+    --color-secondary: #555555;
+    --color-secondary-container: #333333;
+    --color-secondary-fixed: #444444;
+    --color-secondary-fixed-dim: #2a2a2a;
 
     /* Tertiary (ML Green) */
     --color-tertiary: #00A650;

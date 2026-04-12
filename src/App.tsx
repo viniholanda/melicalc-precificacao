@@ -342,7 +342,7 @@ export default function App() {
       {/* ── Top App Bar ── */}
       <header className="fixed top-0 w-full z-50 h-16 flex items-center px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
         <div className="flex-1"></div>
-        <h1 className="text-xl font-bold text-primary tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
+        <h1 className="text-xl font-bold text-primary dark:text-white tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
         <div className="flex-1 flex justify-end gap-3">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
@@ -400,7 +400,7 @@ export default function App() {
           {/* Hero title */}
           <div className="flex items-end justify-between">
             <div>
-              <span className="text-primary font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
+              <span className="text-primary dark:text-white font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
               <h2 className="font-headline text-3xl font-extrabold text-on-surface mt-1">
                 {product.name || 'Simulador de Precificação'}
               </h2>
@@ -594,7 +594,7 @@ export default function App() {
                   <div className="bg-primary text-white p-8 rounded-xl shadow-2xl shadow-primary/20 relative overflow-hidden">
                     <div className="relative z-10">
                       <div className="flex items-start justify-between mb-2">
-                        <span className="text-primary-fixed/70 text-xs font-bold uppercase tracking-widest">
+                        <span className="text-primary-fixed/70 dark:text-white/70 text-xs font-bold uppercase tracking-widest">
                           {activeTab === 'reverse' ? 'Preço Objetivo' : 'Preço de Mercado'}
                         </span>
                         {pricingResult.isFreeShipping ? (
@@ -602,7 +602,7 @@ export default function App() {
                             <Truck size={10} /> FRETE GRÁTIS
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1 bg-secondary-fixed/20 text-secondary-fixed px-3 py-1 rounded-full text-[10px] font-black">
+                          <span className="flex items-center gap-1 bg-secondary-fixed/20 text-secondary-fixed dark:text-white px-3 py-1 rounded-full text-[10px] font-black">
                             <AlertCircle size={10} /> TAXA FIXA
                           </span>
                         )}
@@ -612,13 +612,13 @@ export default function App() {
                       </div>
                       <div className="mt-8 grid grid-cols-2 gap-4">
                         <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg">
-                          <span className="text-primary-fixed/60 text-[10px] font-bold uppercase block mb-1">Lucro Líquido</span>
+                          <span className="text-primary-fixed/60 dark:text-white/60 text-[10px] font-bold uppercase block mb-1">Lucro Líquido</span>
                           <span className={`text-2xl font-bold ${pricingResult.profit >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {formatCurrency(pricingResult.profit)}
                           </span>
                         </div>
                         <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg">
-                          <span className="text-primary-fixed/60 text-[10px] font-bold uppercase block mb-1">Margem Real</span>
+                          <span className="text-primary-fixed/60 dark:text-white/60 text-[10px] font-bold uppercase block mb-1">Margem Real</span>
                           <span className={`text-2xl font-bold ${pricingResult.profitMargin >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {pricingResult.profitMargin.toFixed(2)}%
                           </span>

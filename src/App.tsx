@@ -743,7 +743,7 @@ export default function App() {
                                   <td className="py-3 px-2">
                                     <div className="flex items-center">
                                       <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)} step="0.5" min="1" max="50"
-                                        className="w-14 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                        className="w-14 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white dark:bg-black dark:text-white dark:border-white/30 outline-none focus:ring-2 focus:ring-primary/25" />
                                       <span className="text-xs text-outline ml-0.5">%</span>
                                     </div>
                                   </td>
@@ -798,7 +798,7 @@ export default function App() {
                                     <div className="flex items-center justify-end">
                                       <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)}
                                         step="0.5" min="1" max="50"
-                                        className="w-12 text-xs text-right font-mono font-semibold py-0.5 px-1 rounded border border-outline-variant/60 bg-white outline-none focus:ring-1 focus:ring-primary/30" />
+                                        className="w-12 text-xs text-right font-mono font-semibold py-0.5 px-1 rounded border border-outline-variant/60 dark:border-white/30 bg-white dark:bg-black dark:text-white outline-none focus:ring-1 focus:ring-primary/30" />
                                       <span className="text-xs text-outline ml-0.5">%</span>
                                     </div>
                                   </td>

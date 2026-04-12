@@ -190,7 +190,7 @@ export default function App() {
 
   const product = useMemo(() =>
     products.find(p => p.id === selectedId) || products[0] || INITIAL_PRODUCT,
-  [products, selectedId]);
+    [products, selectedId]);
 
   useEffect(() => {
     localStorage.setItem('meli-products', JSON.stringify(products));
@@ -221,7 +221,7 @@ export default function App() {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     const lowerVal = val.toLowerCase();
-    
+
     // Auto-detect category based on product title
     const entries = getSearchableEntries();
     // Sort entries by label length descending to match more specific subcategories first
@@ -342,11 +342,11 @@ export default function App() {
       {/* ── Top App Bar ── */}
       <header className="fixed top-0 w-full z-50 h-16 flex items-center px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
         <div className="flex-1"></div>
-        <h1 className="text-xl font-bold text-primary dark:text-white tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
+        <h1 className="text-xl font-bold text-primary dark:text-black tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
         <div className="flex-1 flex justify-end gap-3">
-          <button 
+          <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant hover:text-on-surface transition-colors"
+            className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 text-on-surface-variant hover:text-on-surface transition-colors"
             title="Alternar Tema"
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -358,7 +358,7 @@ export default function App() {
       <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
         <button
           onClick={addNewProduct}
-          className="mb-6 w-full bg-primary dark:bg-white text-white dark:text-black py-3 rounded-xl font-semibold shadow-lg hover:bg-zinc-700 dark:hover:bg-zinc-200 hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 text-sm"
+          className="mb-6 w-full py-3 rounded-xl bg-primary text-white dark:bg-neutral-200 dark:text-primary font-bold shadow-xl hover:bg-neutral-600 dark:hover:bg-neutral-300 hover:shadow-primary/40 active:scale-95 transition-all text-sm uppercase tracking-wide border-b-4 border-primary-fixed dark:border-neutral-400 flex items-center justify-center gap-2"
         >
           <Plus size={16} />
           Novo Produto
@@ -370,11 +370,10 @@ export default function App() {
             <div
               key={p.id}
               onClick={() => setSelectedId(p.id)}
-              className={`group w-full flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-150 ${
-                selectedId === p.id
-                  ? 'bg-white text-primary shadow-sm font-bold dark:bg-surface-container-highest dark:text-on-surface'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-white/10'
-              }`}
+              className={`group w-full flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-150 ${selectedId === p.id
+                ? 'bg-white text-primary shadow-sm font-bold dark:bg-surface-container-highest dark:text-on-surface'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-white/10'
+                }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <LayoutDashboard size={18} className={selectedId === p.id ? 'text-primary dark:text-on-surface' : 'text-slate-400 dark:text-slate-500'} />
@@ -400,7 +399,7 @@ export default function App() {
           {/* Hero title */}
           <div className="flex items-end justify-between">
             <div>
-              <span className="text-primary dark:text-white font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
+              <span className="text-primary dark:text-black font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
               <h2 className="font-headline text-3xl font-extrabold text-on-surface mt-1">
                 {product.name || 'Simulador de Precificação'}
               </h2>
@@ -509,8 +508,8 @@ export default function App() {
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-outline uppercase tracking-wide">Modo de cálculo</span>
                     <div className="flex bg-surface-container p-1 rounded-xl">
-                      <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
-                      <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
+                      <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md hover:bg-neutral-600 dark:hover:bg-neutral-800' : 'text-on-surface-variant hover:text-primary hover:bg-neutral-200 dark:hover:bg-neutral-700'}`}>PREÇO DE MERCADO</button>
+                      <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md hover:bg-neutral-600 dark:hover:bg-neutral-800' : 'text-on-surface-variant hover:text-primary hover:bg-neutral-200 dark:hover:bg-neutral-700'}`}>PREÇO OBJETIVO</button>
                     </div>
                   </div>
                   {activeTab === 'reverse' ? (
@@ -651,7 +650,7 @@ export default function App() {
 
                   <button
                     onClick={saveRecord}
-                    className="w-full py-3 rounded-xl bg-primary text-white font-bold shadow-xl hover:bg-zinc-700 dark:hover:bg-surface-container-highest hover:shadow-primary/40 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 text-sm uppercase tracking-wide border-b-4 border-primary-fixed"
+                    className="w-full py-3 rounded-xl bg-primary text-white dark:bg-neutral-200 dark:text-primary font-bold shadow-xl hover:bg-neutral-600 dark:hover:bg-neutral-300 hover:shadow-primary/40 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 text-sm uppercase tracking-wide border-b-4 border-primary-fixed dark:border-neutral-400"
                   >
                     ADICIONAR PRODUTO
                   </button>
@@ -664,182 +663,187 @@ export default function App() {
           {/* ── Saved Records ── */}
           {savedRecords.length > 0 && (
             <section>
-                {/* Section divider */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="h-px flex-1 bg-outline-variant/20" />
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-outline-variant/20">
-                    <BarChart3 size={14} className="text-black dark:text-white" />
-                    <span className="text-xs font-black text-black dark:text-white uppercase tracking-widest">Registros Salvos</span>
-                    <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">{savedRecords.length}</span>
+              {/* Section divider */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="h-px flex-1 bg-outline-variant/20" />
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-outline-variant/20">
+                  {/* Ajustado: preto no claro, branco no escuro */}
+                  <BarChart3 size={14} className="text-black dark:text-white" />
+                  <span className="text-xs font-black text-black dark:text-white uppercase tracking-widest">
+                    Registros Salvos
+                  </span>
+                  <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">
+                    {savedRecords.length}
+                  </span>
+                </div>
+                <div className="h-px flex-1 bg-outline-variant/20" />
+              </div>
+
+              <div className="bg-surface-container-low rounded-2xl overflow-hidden">
+                <div className="p-6 border-b border-outline-variant/10 flex items-center justify-end">
+                  <div className="flex items-center gap-2">
+                    {/* Ajustado: garantindo contraste do contador de itens */}
+                    <span className="text-xs font-bold text-black dark:text-white uppercase tracking-widest mr-2">
+                      {savedRecords.length} {savedRecords.length === 1 ? 'item' : 'itens'}
+                    </span>
+                    <button className="p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-outline transition-colors"><Filter size={18} /></button>
+                    <button className="p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-outline transition-colors"><Download size={18} /></button>
                   </div>
-                  <div className="h-px flex-1 bg-outline-variant/20" />
                 </div>
 
-                <div className="bg-surface-container-low rounded-2xl overflow-hidden">
-                  <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between">
-                    <h3 className="font-headline text-lg font-bold text-black dark:text-white">Registros Salvos</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-outline uppercase tracking-widest mr-2">
-                        {savedRecords.length} {savedRecords.length === 1 ? 'item' : 'itens'}
-                      </span>
-                      <button className="p-2 hover:bg-surface-container-high rounded-lg text-outline transition-colors"><Filter size={18} /></button>
-                      <button className="p-2 hover:bg-surface-container-high rounded-lg text-outline transition-colors"><Download size={18} /></button>
-                    </div>
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-separate border-spacing-y-1 px-4 table-fixed min-w-[1200px]">
-                      <thead>
-                        <tr className="text-[10px] font-bold text-outline uppercase tracking-widest">
-                          <th className="pb-3 pl-4 w-[160px]">Produto</th>
-                          <th className="pb-3 px-2 w-[100px]">Link</th>
-                          <th className="pb-3 px-2 text-right">Custo</th>
-                          <th className="pb-3 px-2 text-right">Embal.</th>
-                          <th className="pb-3 px-2 text-right">Tarifa%</th>
-                          <th className="pb-3 px-2 text-right">Imposto%</th>
-                          <th className="pb-3 px-2 text-right">Margem%</th>
-                          <th className="pb-3 px-2 text-right">Preço Venda</th>
-                          <th className="pb-3 px-2 text-right">Lucro</th>
-                          <th className="pb-3 px-2 pr-6 text-right">Margem Real</th>
-                          <th className="pb-3 px-2 pl-6 w-[180px]">Comentário</th>
-                          <th className="pb-3 pr-4 text-right">Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {savedRecords.map(record => {
-                          const isEditing = editingId === record.id;
-                          const borderColor = record.commentColor === 'green' ? 'border-l-4 border-l-green-500'
-                            : record.commentColor === 'yellow' ? 'border-l-4 border-l-amber-400'
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-separate border-spacing-y-1 px-4 table-fixed min-w-[1200px]">
+                    <thead>
+                      <tr className="text-[10px] font-bold text-outline uppercase tracking-widest">
+                        <th className="pb-3 pl-4 w-[160px]">Produto</th>
+                        <th className="pb-3 px-2 w-[100px]">Link</th>
+                        <th className="pb-3 px-2 text-right">Custo</th>
+                        <th className="pb-3 px-2 text-right">Embal.</th>
+                        <th className="pb-3 px-2 text-right">Tarifa%</th>
+                        <th className="pb-3 px-2 text-right">Imposto%</th>
+                        <th className="pb-3 px-2 text-right">Margem%</th>
+                        <th className="pb-3 px-2 text-right">Preço Venda</th>
+                        <th className="pb-3 px-2 text-right">Lucro</th>
+                        <th className="pb-3 px-2 pr-6 text-right">Margem Real</th>
+                        <th className="pb-3 px-2 pl-6 w-[180px]">Comentário</th>
+                        <th className="pb-3 pr-4 text-right">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {savedRecords.map(record => {
+                        const isEditing = editingId === record.id;
+                        const borderColor = record.commentColor === 'green' ? 'border-l-4 border-l-green-500'
+                          : record.commentColor === 'yellow' ? 'border-l-4 border-l-amber-400'
                             : record.commentColor === 'red' ? 'border-l-4 border-l-red-500'
-                            : 'border-l-4 border-l-transparent';
-                          return (
-                            <tr key={record.id} className={`bg-surface-container-lowest hover:bg-surface-container-high transition-colors ${borderColor}`}>
-                              {isEditing ? (
-                                <>
-                                  <td className="py-3 pl-4 rounded-l-xl w-[160px]">
-                                    <input type="text" value={record.name} onChange={e => updateRecord(record.id, 'name', e.target.value)}
-                                      className="w-full text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
-                                  </td>
-                                  <td className="py-3 px-2">
-                                    <input type="url" value={record.link} onChange={e => updateRecord(record.id, 'link', e.target.value)} placeholder="https://..."
-                                      className="w-28 text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
-                                  </td>
-                                  <td className="py-3 px-2">
-                                    <NumberInput value={record.cost} onChange={(e: any) => updateRecord(record.id, 'cost', parseFloat(e.target.value) || 0)} step="0.01" min="0"
-                                      className="w-20 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
-                                  </td>
-                                  <td className="py-3 px-2">
-                                    <NumberInput value={record.packaging} onChange={(e: any) => updateRecord(record.id, 'packaging', parseFloat(e.target.value) || 0)} step="0.01" min="0"
-                                      className="w-20 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
-                                  </td>
-                                  <td className="py-3 px-2">
-                                    <NumberInput value={record.categoryTax} onChange={(e: any) => updateRecord(record.id, 'categoryTax', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
-                                      className="w-16 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
-                                  </td>
-                                  <td className="py-3 px-2">
-                                    <NumberInput value={record.taxPercentage} onChange={(e: any) => updateRecord(record.id, 'taxPercentage', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
-                                      className="w-16 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
-                                  </td>
-                                  <td className="py-3 px-2">
-                                    <div className="flex items-center">
-                                      <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)} step="0.5" min="1" max="50"
-                                        className="w-14 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white dark:bg-black dark:text-white dark:border-white/30 outline-none focus:ring-2 focus:ring-primary/25" />
-                                      <span className="text-xs text-outline ml-0.5">%</span>
+                              : 'border-l-4 border-l-transparent';
+                        return (
+                          <tr key={record.id} className={`bg-surface-container-lowest hover:bg-surface-container-high transition-colors ${borderColor}`}>
+                            {isEditing ? (
+                              <>
+                                <td className="py-3 pl-4 rounded-l-xl w-[160px]">
+                                  <input type="text" value={record.name} onChange={e => updateRecord(record.id, 'name', e.target.value)}
+                                    className="w-full text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                </td>
+                                <td className="py-3 px-2">
+                                  <input type="url" value={record.link} onChange={e => updateRecord(record.id, 'link', e.target.value)} placeholder="https://..."
+                                    className="w-28 text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                </td>
+                                <td className="py-3 px-2">
+                                  <NumberInput value={record.cost} onChange={(e: any) => updateRecord(record.id, 'cost', parseFloat(e.target.value) || 0)} step="0.01" min="0"
+                                    className="w-20 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                </td>
+                                <td className="py-3 px-2">
+                                  <NumberInput value={record.packaging} onChange={(e: any) => updateRecord(record.id, 'packaging', parseFloat(e.target.value) || 0)} step="0.01" min="0"
+                                    className="w-20 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                </td>
+                                <td className="py-3 px-2">
+                                  <NumberInput value={record.categoryTax} onChange={(e: any) => updateRecord(record.id, 'categoryTax', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
+                                    className="w-16 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                </td>
+                                <td className="py-3 px-2">
+                                  <NumberInput value={record.taxPercentage} onChange={(e: any) => updateRecord(record.id, 'taxPercentage', parseFloat(e.target.value) || 0)} step="0.1" min="0" max="99"
+                                    className="w-16 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                </td>
+                                <td className="py-3 px-2">
+                                  <div className="flex items-center">
+                                    <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)} step="0.5" min="1" max="50"
+                                      className="w-14 text-sm text-right py-1 px-2 rounded-md border border-outline-variant bg-white dark:bg-black dark:text-white dark:border-white/30 outline-none focus:ring-2 focus:ring-primary/25" />
+                                    <span className="text-xs text-outline ml-0.5">%</span>
+                                  </div>
+                                </td>
+                                <td className="py-3 px-2 text-right font-mono font-bold text-on-surface text-sm">{formatCurrency(record.sellingPrice)}</td>
+                                <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
+                                <td className={`py-3 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
+                                <td className="py-3 px-2 pl-6">
+                                  <div className="flex flex-col gap-1.5">
+                                    <input type="text" value={record.comment} onChange={e => updateRecord(record.id, 'comment', e.target.value)} placeholder="Comentário..."
+                                      className="w-full min-w-[100px] text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
+                                    <div className="flex items-center gap-1.5">
+                                      {(['green', 'yellow', 'red'] as CommentColor[]).map(color => (
+                                        <button key={color} onClick={() => updateRecord(record.id, 'commentColor', record.commentColor === color ? '' : color)}
+                                          className={`w-5 h-5 rounded-full border-2 transition-all ${color === 'green' ? 'bg-green-500' : color === 'yellow' ? 'bg-amber-400' : 'bg-red-500'} ${record.commentColor === color ? 'border-on-surface scale-110' : 'border-white shadow-sm hover:scale-110'}`} />
+                                      ))}
                                     </div>
-                                  </td>
-                                  <td className="py-3 px-2 text-right font-mono font-bold text-on-surface text-sm">{formatCurrency(record.sellingPrice)}</td>
-                                  <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
-                                  <td className={`py-3 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
-                                  <td className="py-3 px-2 pl-6">
-                                    <div className="flex flex-col gap-1.5">
-                                      <input type="text" value={record.comment} onChange={e => updateRecord(record.id, 'comment', e.target.value)} placeholder="Comentário..."
-                                        className="w-full min-w-[100px] text-sm py-1 px-2 rounded-md border border-outline-variant bg-white outline-none focus:ring-2 focus:ring-primary/25" />
-                                      <div className="flex items-center gap-1.5">
-                                        {(['green', 'yellow', 'red'] as CommentColor[]).map(color => (
-                                          <button key={color} onClick={() => updateRecord(record.id, 'commentColor', record.commentColor === color ? '' : color)}
-                                            className={`w-5 h-5 rounded-full border-2 transition-all ${color === 'green' ? 'bg-green-500' : color === 'yellow' ? 'bg-amber-400' : 'bg-red-500'} ${record.commentColor === color ? 'border-on-surface scale-110' : 'border-white shadow-sm hover:scale-110'}`} />
-                                        ))}
-                                      </div>
+                                  </div>
+                                </td>
+                                <td className="py-3 px-2 rounded-r-xl">
+                                  <div className="flex items-center justify-end gap-1">
+                                    <button onClick={() => setEditingId(null)} className="p-1.5 text-ml-green hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg transition-colors" title="Confirmar"><Check size={14} /></button>
+                                    <button onClick={() => deleteRecord(record.id)} className="p-1.5 text-outline hover:text-error hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg transition-colors" title="Excluir"><Trash2 size={14} /></button>
+                                  </div>
+                                </td>
+                              </>
+                            ) : (
+                              <>
+                                <td className="py-4 pl-4 rounded-l-xl w-[160px] max-w-[160px]">
+                                  <div className="flex items-center gap-2 w-full overflow-hidden">
+                                    <div className="w-6 h-6 rounded bg-surface-container flex items-center justify-center flex-shrink-0">
+                                      <Package size={12} className="text-outline" />
                                     </div>
-                                  </td>
-                                  <td className="py-3 px-2 rounded-r-xl">
-                                    <div className="flex items-center justify-end gap-1">
-                                      <button onClick={() => setEditingId(null)} className="p-1.5 text-ml-green hover:bg-ml-green/10 rounded-lg transition-colors" title="Confirmar"><Check size={14} /></button>
-                                      <button onClick={() => deleteRecord(record.id)} className="p-1.5 text-outline hover:text-error hover:bg-error-container/20 rounded-lg transition-colors" title="Excluir"><Trash2 size={14} /></button>
+                                    <span className="text-sm font-bold truncate block w-full whitespace-nowrap overflow-hidden text-ellipsis" title={record.name}>{record.name}</span>
+                                  </div>
+                                </td>
+                                <td className="py-4 px-2">
+                                  {record.link ? (
+                                    <a href={record.link} target="_blank" rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1.5 text-primary dark:text-white hover:underline max-w-[120px]" title={record.link}>
+                                      <ExternalLink size={12} className="flex-shrink-0" />
+                                      <span className="truncate text-xs font-medium">
+                                        {(() => { try { return new URL(record.link).hostname.replace('www.', ''); } catch { return record.link; } })()}
+                                      </span>
+                                    </a>
+                                  ) : <span className="text-outline/40">—</span>}
+                                </td>
+                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{formatCurrency(record.cost)}</td>
+                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{formatCurrency(record.packaging)}</td>
+                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{record.categoryTax}%</td>
+                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{record.taxPercentage}%</td>
+                                <td className="py-4 px-2">
+                                  <div className="flex items-center justify-end">
+                                    <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)}
+                                      step="0.5" min="1" max="50"
+                                      className="w-12 text-xs text-right font-mono font-semibold py-0.5 px-1 rounded border border-outline-variant/60 dark:border-white/30 bg-white dark:bg-black dark:text-white outline-none focus:ring-1 focus:ring-primary/30" />
+                                    <span className="text-xs text-outline ml-0.5">%</span>
+                                  </div>
+                                </td>
+                                <td className="py-4 px-2 text-right font-mono font-bold text-sm text-on-surface">{formatCurrency(record.sellingPrice)}</td>
+                                <td className={`py-4 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
+                                <td className={`py-4 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>
+                                  {record.profitMargin.toFixed(2)}%
+                                </td>
+                                <td className="py-4 px-2 pl-6">
+                                  {record.comment ? (
+                                    <div className="flex items-center gap-1.5">
+                                      {record.commentColor && (
+                                        <span className={`w-2 h-2 rounded-full flex-shrink-0 ${record.commentColor === 'green' ? 'bg-green-500' : record.commentColor === 'yellow' ? 'bg-amber-400' : 'bg-red-500'}`} />
+                                      )}
+                                      <span className="text-xs text-on-surface-variant truncate max-w-[130px]" title={record.comment}>{record.comment}</span>
                                     </div>
-                                  </td>
-                                </>
-                              ) : (
-                                <>
-                                  <td className="py-4 pl-4 rounded-l-xl w-[160px] max-w-[160px]">
-                                    <div className="flex items-center gap-2 w-full overflow-hidden">
-                                      <div className="w-6 h-6 rounded bg-surface-container flex items-center justify-center flex-shrink-0">
-                                        <Package size={12} className="text-outline" />
-                                      </div>
-                                      <span className="text-sm font-bold truncate block w-full whitespace-nowrap overflow-hidden text-ellipsis" title={record.name}>{record.name}</span>
-                                    </div>
-                                  </td>
-                                  <td className="py-4 px-2">
-                                    {record.link ? (
-                                      <a href={record.link} target="_blank" rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1.5 text-primary dark:text-white hover:underline max-w-[120px]" title={record.link}>
-                                        <ExternalLink size={12} className="flex-shrink-0" />
-                                        <span className="truncate text-xs font-medium">
-                                          {(() => { try { return new URL(record.link).hostname.replace('www.', ''); } catch { return record.link; } })()}
-                                        </span>
-                                      </a>
-                                    ) : <span className="text-outline/40">—</span>}
-                                  </td>
-                                  <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{formatCurrency(record.cost)}</td>
-                                  <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{formatCurrency(record.packaging)}</td>
-                                  <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{record.categoryTax}%</td>
-                                  <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{record.taxPercentage}%</td>
-                                  <td className="py-4 px-2">
-                                    <div className="flex items-center justify-end">
-                                      <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)}
-                                        step="0.5" min="1" max="50"
-                                        className="w-12 text-xs text-right font-mono font-semibold py-0.5 px-1 rounded border border-outline-variant/60 dark:border-white/30 bg-white dark:bg-black dark:text-white outline-none focus:ring-1 focus:ring-primary/30" />
-                                      <span className="text-xs text-outline ml-0.5">%</span>
-                                    </div>
-                                  </td>
-                                  <td className="py-4 px-2 text-right font-mono font-bold text-sm text-on-surface">{formatCurrency(record.sellingPrice)}</td>
-                                  <td className={`py-4 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
-                                  <td className={`py-4 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>
-                                    {record.profitMargin.toFixed(2)}%
-                                  </td>
-                                  <td className="py-4 px-2 pl-6">
-                                    {record.comment ? (
-                                      <div className="flex items-center gap-1.5">
-                                        {record.commentColor && (
-                                          <span className={`w-2 h-2 rounded-full flex-shrink-0 ${record.commentColor === 'green' ? 'bg-green-500' : record.commentColor === 'yellow' ? 'bg-amber-400' : 'bg-red-500'}`} />
-                                        )}
-                                        <span className="text-xs text-on-surface-variant truncate max-w-[130px]" title={record.comment}>{record.comment}</span>
-                                      </div>
-                                    ) : <span className="text-outline/40 text-xs">—</span>}
-                                  </td>
-                                  <td className="py-4 pr-4 rounded-r-xl">
-                                    <div className="flex items-center justify-end gap-1">
-                                      <button onClick={() => setEditingId(record.id)} className="text-outline hover:text-primary transition-colors p-1.5 rounded-lg hover:bg-surface-container-high" title="Editar"><Pencil size={14} /></button>
-                                      <button onClick={() => deleteRecord(record.id)} className="text-outline hover:text-error transition-colors p-1.5 rounded-lg hover:bg-error-container/20 ml-1" title="Excluir"><Trash2 size={14} /></button>
-                                    </div>
-                                  </td>
-                                </>
-                              )}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="p-6 flex justify-center">
-                    <p className="text-xs font-bold text-primary uppercase tracking-widest">
-                      {savedRecords.length} {savedRecords.length === 1 ? 'registro salvo' : 'registros salvos'} — MeliCalc v1.2
-                    </p>
-                  </div>
+                                  ) : <span className="text-outline/40 text-xs">—</span>}
+                                </td>
+                                <td className="py-4 pr-4 rounded-r-xl">
+                                  <div className="flex items-center justify-end gap-1">
+                                    <button onClick={() => setEditingId(record.id)} className="text-outline hover:text-primary transition-colors p-1.5 rounded-lg hover:bg-surface-container-high" title="Editar"><Pencil size={14} /></button>
+                                    <button onClick={() => deleteRecord(record.id)} className="text-outline hover:text-error transition-colors p-1.5 rounded-lg hover:bg-error-container/20 ml-1" title="Excluir"><Trash2 size={14} /></button>
+                                  </div>
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
-              </section>
-            )}
+
+                <div className="p-6 flex justify-center">
+                  <p className="text-xs font-bold text-primary uppercase tracking-widest">
+                    {savedRecords.length} {savedRecords.length === 1 ? 'registro salvo' : 'registros salvos'} — MeliCalc v1.2
+                  </p>
+                </div>
+              </div>
+            </section>
+          )}
         </div>
       </main>
     </div>

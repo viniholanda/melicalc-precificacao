@@ -426,9 +426,9 @@ export default function App() {
 
               {/* Step 1: Produto */}
               <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
-                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
                   <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">1</span>
-                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Produto</span>
+                  <span className="font-semibold text-sm text-on-surface">Produto</span>
                 </div>
                 <div className="p-6 space-y-5">
                   <div>
@@ -459,17 +459,17 @@ export default function App() {
 
               {/* Step 2: Custos */}
               <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
-                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
                   <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">2</span>
-                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Custos</span>
+                  <span className="font-semibold text-sm text-on-surface">Custos</span>
                 </div>
                 <div className="p-6">
                   <div className="grid grid-cols-2 gap-5">
                     <div>
-                      <label className="label-text">Custo do Produto (R$)</label>
+                      <label className="label-required">Custo do Produto <span className="text-error">*</span></label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                        <NumberInput name="cost" value={product.cost} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
+                        <NumberInput name="cost" value={product.cost} onChange={handleInputChange} className="input-field input-required pl-10" step="0.01" min="0" />
                       </div>
                     </div>
                     <div>
@@ -485,9 +485,9 @@ export default function App() {
 
               {/* Step 3: Comissão */}
               <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
-                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
                   <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">3</span>
-                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Comissão</span>
+                  <span className="font-semibold text-sm text-on-surface">Comissão</span>
                 </div>
                 <div className="p-6 space-y-5">
                   <CategorySelector
@@ -507,9 +507,9 @@ export default function App() {
 
               {/* Step 4: Frete */}
               <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
-                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
                   <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">4</span>
-                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Frete</span>
+                  <span className="font-semibold text-sm text-on-surface">Frete</span>
                 </div>
                 <div className="p-6">
                   <div className="grid grid-cols-4 gap-3 bg-surface-container-low p-4 rounded-xl">
@@ -552,9 +552,9 @@ export default function App() {
 
               {/* Step 5: Margem */}
               <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
-                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
                   <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">5</span>
-                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Margem</span>
+                  <span className="font-semibold text-sm text-on-surface">Margem</span>
                 </div>
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
@@ -566,18 +566,18 @@ export default function App() {
                   </div>
                   {activeTab === 'reverse' ? (
                     <div>
-                      <label className="label-text">Margem Desejada (%)</label>
+                      <label className="label-required">Margem Desejada <span className="text-error">*</span></label>
                       <div className="relative">
-                        <NumberInput name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} className="input-field pr-8 text-lg font-bold" />
+                        <NumberInput name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} className="input-field input-required pr-8 text-lg font-bold" />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <label className="label-text">Preço de Venda Atual (R$)</label>
+                      <label className="label-required">Preço de Venda Atual <span className="text-error">*</span></label>
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                        <NumberInput value={currentPrice} onChange={(e: any) => setCurrentPrice(parseFloat(e.target.value) || 0)} className="input-field pl-10 text-lg font-bold" step="0.01" />
+                        <NumberInput value={currentPrice} onChange={(e: any) => setCurrentPrice(parseFloat(e.target.value) || 0)} className="input-field input-required pl-10 text-lg font-bold" step="0.01" />
                       </div>
                     </div>
                   )}
@@ -613,19 +613,19 @@ export default function App() {
                           </span>
                         )}
                       </div>
-                      <div className="text-5xl font-black tracking-tight mt-2">
+                      <div className="text-7xl font-black tracking-tight mt-2 leading-none">
                         {formatCurrency(pricingResult.sellingPrice)}
                       </div>
                       <div className="mt-8 grid grid-cols-2 gap-4">
                         <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg">
                           <span className="text-primary-fixed/60 text-[10px] font-bold uppercase block mb-1">Lucro Líquido</span>
-                          <span className={`text-2xl font-bold ${pricingResult.profit >= 0 ? 'text-ml-green' : 'text-red-300'}`}>
+                          <span className={`text-2xl font-bold ${pricingResult.profit >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {formatCurrency(pricingResult.profit)}
                           </span>
                         </div>
                         <div className="bg-white/10 backdrop-blur-md p-4 rounded-lg">
                           <span className="text-primary-fixed/60 text-[10px] font-bold uppercase block mb-1">Margem Real</span>
-                          <span className={`text-2xl font-bold ${pricingResult.profitMargin >= 0 ? 'text-ml-green' : 'text-red-300'}`}>
+                          <span className={`text-2xl font-bold ${pricingResult.profitMargin >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {pricingResult.profitMargin.toFixed(2)}%
                           </span>
                         </div>
@@ -897,8 +897,8 @@ function CategorySelector({
     <div className="space-y-4">
       {/* Category */}
       <div>
-        <label className="label-text flex items-center gap-1.5">
-          <Tag size={11} className="text-primary" /> Categoria
+        <label className="label-required flex items-center gap-1.5">
+          <Tag size={11} className="text-primary" /> Categoria <span className="text-error">*</span>
         </label>
         <div className="relative" ref={dropdownRef}>
           <button

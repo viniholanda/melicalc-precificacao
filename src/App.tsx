@@ -659,9 +659,11 @@ export default function App() {
               </AnimatePresence>
             </section>
 
-            {/* ── Bottom: Saved Records ── */}
-            {savedRecords.length > 0 && (
-              <section className="col-span-12">
+          </div>{/* end grid */}
+
+          {/* ── Saved Records ── */}
+          {savedRecords.length > 0 && (
+            <section>
                 {/* Section divider */}
                 <div className="flex items-center gap-4 mb-6">
                   <div className="h-px flex-1 bg-outline-variant/20" />
@@ -838,7 +840,6 @@ export default function App() {
                 </div>
               </section>
             )}
-          </div>
         </div>
       </main>
     </div>

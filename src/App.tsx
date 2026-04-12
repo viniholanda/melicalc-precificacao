@@ -114,7 +114,7 @@ const INITIAL_PRODUCT: Product = {
   categoryTax: 11,
   taxPercentage: 4,
   packaging: 4.50,
-  fixedFee: 6.00,
+  fixedFee: 0,
   shippingFee: 18.50,
   desiredMargin: 20,
   weight: 0,
@@ -558,18 +558,10 @@ export default function App() {
                     })()}
 
                     {getEffectiveWeight(product.weight, product.height, product.width, product.length) <= 0 && (
-                      <div className="grid grid-cols-2 gap-4 mt-4">
-                        <div>
-                          <label className="label-text">Taxa Fixa (&lt;79)</label>
-                          <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                            <NumberInput name="fixedFee" value={product.fixedFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="label-text">Frete Grátis (&ge;79)</label>
-                          <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                            <NumberInput name="shippingFee" value={product.shippingFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
-                          </div>
+                      <div className="mt-4">
+                        <label className="label-text">Frete Grátis (&ge;79)</label>
+                        <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
+                          <NumberInput name="shippingFee" value={product.shippingFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
                         </div>
                       </div>
                     )}
@@ -637,9 +629,9 @@ export default function App() {
                     <div className="space-y-4">
                       <CostRowNew label="Custo de Aquisição" value={product.cost} color="bg-primary" />
                       <CostRowNew label="Embalagem" value={product.packaging} color="bg-outline" />
-                      <CostRowNew label={`Comissão ML (${product.categoryTax}%)`} value={pricingResult.mlCommission} color="bg-tertiary" />
+                      <CostRowNew label={`TARIFA ML (${product.categoryTax}%)`} value={pricingResult.mlCommission} color="bg-tertiary" />
                       <CostRowNew
-                        label={pricingResult.isFreeShipping ? 'Frete Grátis (ML)' : 'Taxa Fixa (ML)'}
+                        label={pricingResult.isFreeShipping ? 'Frete Grátis (ML)' : 'Frete (ML)'}
                         value={pricingResult.isFreeShipping ? pricingResult.shippingFee : pricingResult.fixedFee}
                         color="bg-secondary"
                       />

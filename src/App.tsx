@@ -499,10 +499,44 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Step 4: Frete */}
+              {/* Step 4: Margem */}
               <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
                 <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
                   <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">4</span>
+                  <span className="font-semibold text-sm text-on-surface">Margem</span>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-bold text-outline uppercase tracking-wide">Modo de cálculo</span>
+                    <div className="flex bg-surface-container p-1 rounded-xl">
+                      <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
+                      <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
+                    </div>
+                  </div>
+                  {activeTab === 'reverse' ? (
+                    <div>
+                      <label className="label-required">Margem Desejada <span className="text-error">*</span></label>
+                      <div className="relative">
+                        <NumberInput name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} className="input-field input-required pr-8 text-lg font-bold" />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="label-required">Preço de Venda Atual <span className="text-error">*</span></label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
+                        <NumberInput value={currentPrice} onChange={(e: any) => setCurrentPrice(parseFloat(e.target.value) || 0)} className="input-field input-required pl-10 text-lg font-bold" step="0.01" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Step 5: Frete */}
+              <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
+                <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">5</span>
                   <span className="font-semibold text-sm text-on-surface">Frete</span>
                 </div>
                 <div className="p-6">
@@ -538,40 +572,6 @@ export default function App() {
                       <label className="label-text">Frete Grátis (&ge;79)</label>
                       <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
                         <NumberInput name="shippingFee" value={product.shippingFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Step 5: Margem */}
-              <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
-                <div className="px-6 py-3 bg-surface-container-high flex items-center gap-3 border-b border-outline-variant/15">
-                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">5</span>
-                  <span className="font-semibold text-sm text-on-surface">Margem</span>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-bold text-outline uppercase tracking-wide">Modo de cálculo</span>
-                    <div className="flex bg-surface-container p-1 rounded-xl">
-                      <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
-                      <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
-                    </div>
-                  </div>
-                  {activeTab === 'reverse' ? (
-                    <div>
-                      <label className="label-required">Margem Desejada <span className="text-error">*</span></label>
-                      <div className="relative">
-                        <NumberInput name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} className="input-field input-required pr-8 text-lg font-bold" />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <label className="label-required">Preço de Venda Atual <span className="text-error">*</span></label>
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                        <NumberInput value={currentPrice} onChange={(e: any) => setCurrentPrice(parseFloat(e.target.value) || 0)} className="input-field input-required pl-10 text-lg font-bold" step="0.01" />
                       </div>
                     </div>
                   )}

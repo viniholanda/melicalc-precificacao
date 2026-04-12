@@ -358,7 +358,7 @@ export default function App() {
       <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
         <button
           onClick={addNewProduct}
-          className="mb-6 w-full bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-xl font-semibold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2 text-sm"
+          className="mb-6 w-full bg-gradient-to-br from-primary to-primary-container dark:from-white/15 dark:to-white/10 text-white py-3 rounded-xl font-semibold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2 text-sm dark:border dark:border-white/20"
         >
           <Plus size={16} />
           Novo Produto
@@ -668,8 +668,8 @@ export default function App() {
                 <div className="flex items-center gap-4 mb-6">
                   <div className="h-px flex-1 bg-outline-variant/20" />
                   <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-outline-variant/20">
-                    <BarChart3 size={14} className="text-primary" />
-                    <span className="text-xs font-black text-primary uppercase tracking-widest">Registros Salvos</span>
+                    <BarChart3 size={14} className="text-primary dark:text-white" />
+                    <span className="text-xs font-black text-primary dark:text-white uppercase tracking-widest">Registros Salvos</span>
                     <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">{savedRecords.length}</span>
                   </div>
                   <div className="h-px flex-1 bg-outline-variant/20" />
@@ -677,7 +677,7 @@ export default function App() {
 
                 <div className="bg-surface-container-low rounded-2xl overflow-hidden">
                   <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between">
-                    <h3 className="font-headline text-lg font-bold">Registros Salvos</h3>
+                    <h3 className="font-headline text-lg font-bold dark:text-white">Registros Salvos</h3>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-outline uppercase tracking-widest mr-2">
                         {savedRecords.length} {savedRecords.length === 1 ? 'item' : 'itens'}

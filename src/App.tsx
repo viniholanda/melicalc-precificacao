@@ -342,7 +342,7 @@ export default function App() {
       {/* ── Top App Bar ── */}
       <header className="fixed top-0 w-full z-50 h-16 flex items-center px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
         <div className="flex-1"></div>
-        <h1 className="text-xl font-bold text-primary dark:text-white tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
+        <h1 className="text-xl font-bold text-primary dark:text-black tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
         <div className="flex-1 flex justify-end gap-3">
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
@@ -358,7 +358,7 @@ export default function App() {
       <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
         <button
           onClick={addNewProduct}
-          className="mb-6 w-full bg-gradient-to-br from-primary to-primary-container dark:from-white/15 dark:to-white/10 text-white py-3 rounded-xl font-semibold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2 text-sm dark:border dark:border-white/20"
+          className="mb-6 w-full bg-gradient-to-br from-primary to-primary-container dark:from-surface-container-high dark:to-surface-container text-white py-3 rounded-xl font-semibold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2 text-sm dark:border dark:border-white/20"
         >
           <Plus size={16} />
           Novo Produto
@@ -400,7 +400,7 @@ export default function App() {
           {/* Hero title */}
           <div className="flex items-end justify-between">
             <div>
-              <span className="text-primary dark:text-white font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
+              <span className="text-primary dark:text-black font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
               <h2 className="font-headline text-3xl font-extrabold text-on-surface mt-1">
                 {product.name || 'Simulador de Precificação'}
               </h2>

@@ -422,17 +422,15 @@ export default function App() {
           <div className="grid grid-cols-12 gap-8">
 
             {/* ── Left: Configuration (7 cols) ── */}
-            <section className="col-span-12 lg:col-span-7 space-y-6">
-              <div className="bg-surface-container-lowest p-8 rounded-xl">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Settings size={20} className="text-primary" />
-                  </div>
-                  <h3 className="font-headline text-2xl font-black text-primary">Viabilidade do Produto</h3>
-                </div>
+            <section className="col-span-12 lg:col-span-7 space-y-4">
 
-                <div className="space-y-5">
-                  {/* Nome */}
+              {/* Step 1: Produto */}
+              <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
+                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">1</span>
+                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Produto</span>
+                </div>
+                <div className="p-6 space-y-5">
                   <div>
                     <label className="label-text">Nome do Produto</label>
                     <input
@@ -443,8 +441,6 @@ export default function App() {
                       placeholder="Ex: Smartwatch Premium Series 9"
                     />
                   </div>
-
-                  {/* Link */}
                   <div>
                     <label className="label-text">Link Mercado Livre (Obrigatório)</label>
                     <div className="relative">
@@ -458,8 +454,16 @@ export default function App() {
                       />
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  {/* Custo + Embalagem */}
+              {/* Step 2: Custos */}
+              <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
+                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">2</span>
+                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Custos</span>
+                </div>
+                <div className="p-6">
                   <div className="grid grid-cols-2 gap-5">
                     <div>
                       <label className="label-text">Custo do Produto (R$)</label>
@@ -476,18 +480,21 @@ export default function App() {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  {/* Category & Commission */}
-                  <div className="pt-4 border-t border-outline-variant/10">
-                    <h4 className="text-base font-extrabold text-primary mb-4 uppercase tracking-wide">Tarifa Mercado Livre</h4>
-                    <CategorySelector
-                      currentCommission={product.categoryTax}
-                      onSelectCategory={(commission) => setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: commission } : p))}
-                      onManualChange={(value) => setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: value } : p))}
-                    />
-                  </div>
-
-                  {/* Imposto */}
+              {/* Step 3: Comissão */}
+              <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
+                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">3</span>
+                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Comissão</span>
+                </div>
+                <div className="p-6 space-y-5">
+                  <CategorySelector
+                    currentCommission={product.categoryTax}
+                    onSelectCategory={(commission) => setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: commission } : p))}
+                    onManualChange={(value) => setProducts(prev => prev.map(p => p.id === selectedId ? { ...p, categoryTax: value } : p))}
+                  />
                   <div>
                     <label className="label-text">Imposto (%)</label>
                     <div className="relative">
@@ -495,83 +502,92 @@ export default function App() {
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
                     </div>
                   </div>
-
-                  {/* Margem / preço atual */}
-                  <div className="pt-4 border-t border-outline-variant/10">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-base font-extrabold text-primary uppercase tracking-wide">Lucro / Mercado</h4>
-                      <div className="flex bg-surface-container p-1 rounded-xl">
-                        <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
-                        <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
-                      </div>
-                    </div>
-                    {activeTab === 'reverse' ? (
-                      <div>
-                        <label className="label-text">Margem Desejada (%)</label>
-                        <div className="relative">
-                          <NumberInput name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} className="input-field pr-8 text-lg font-bold" />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div>
-                        <label className="label-text">Preço de Venda Atual (R$)</label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                          <NumberInput value={currentPrice} onChange={(e: any) => setCurrentPrice(parseFloat(e.target.value) || 0)} className="input-field pl-10 text-lg font-bold" step="0.01" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Frete / Peso */}
-                  <div className="pt-4 border-t border-outline-variant/10">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Truck size={15} className="text-primary" />
-                      <h4 className="text-base font-extrabold text-primary uppercase tracking-wide">Frete — Peso e Dimensões</h4>
-                    </div>
-                    <div className="grid grid-cols-4 gap-3 bg-surface-container-low p-4 rounded-xl">
-                      {[
-                        { label: 'Peso (kg)', name: 'weight', step: '0.01' },
-                        { label: 'Alt (cm)', name: 'height', step: '0.1' },
-                        { label: 'Larg (cm)', name: 'width', step: '0.1' },
-                        { label: 'Comp (cm)', name: 'length', step: '0.1' },
-                      ].map(f => (
-                        <div key={f.name}>
-                          <label className="block text-[10px] font-bold text-outline mb-1 uppercase">{f.label}</label>
-                          <NumberInput name={f.name} value={(product as any)[f.name]} onChange={handleInputChange} step={f.step} min="0" className="w-full bg-transparent border-b border-outline/20 focus:border-primary focus:outline-none py-1 text-sm font-bold" />
-                        </div>
-                      ))}
-                    </div>
-
-                    {(() => {
-                      const ew = getEffectiveWeight(product.weight, product.height, product.width, product.length);
-                      const volW = (product.height * product.width * product.length) / 6000;
-                      if (ew <= 0) return <p className="text-[11px] text-outline mt-2">Preencha peso ou dimensões para calcular o frete automaticamente pela tabela ML.</p>;
-                      return (
-                        <div className="mt-3 p-3 rounded-lg bg-surface-container-low space-y-1">
-                          {volW > 0 && <div className="flex justify-between text-xs"><span className="text-outline">Peso volumétrico</span><span className="font-mono font-semibold">{volW.toFixed(2)} kg</span></div>}
-                          <div className="flex justify-between text-xs"><span className="text-outline">Peso efetivo</span><span className="font-mono font-bold text-primary">{ew.toFixed(2)} kg</span></div>
-                          <div className="flex justify-between text-xs"><span className="text-outline">Custo frete (auto)</span><span className="font-mono font-bold text-primary">{formatCurrency(pricingResult.fixedFee + pricingResult.shippingFee)}</span></div>
-                        </div>
-                      );
-                    })()}
-
-                    {getEffectiveWeight(product.weight, product.height, product.width, product.length) <= 0 && (
-                      <div className="mt-4">
-                        <label className="label-text">Frete Grátis (&ge;79)</label>
-                        <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-                          <NumberInput name="shippingFee" value={product.shippingFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
                 </div>
               </div>
+
+              {/* Step 4: Frete */}
+              <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
+                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">4</span>
+                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Frete</span>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-4 gap-3 bg-surface-container-low p-4 rounded-xl">
+                    {[
+                      { label: 'Peso (kg)', name: 'weight', step: '0.01' },
+                      { label: 'Alt (cm)', name: 'height', step: '0.1' },
+                      { label: 'Larg (cm)', name: 'width', step: '0.1' },
+                      { label: 'Comp (cm)', name: 'length', step: '0.1' },
+                    ].map(f => (
+                      <div key={f.name}>
+                        <label className="block text-[10px] font-bold text-outline mb-1 uppercase">{f.label}</label>
+                        <NumberInput name={f.name} value={(product as any)[f.name]} onChange={handleInputChange} step={f.step} min="0" className="w-full bg-transparent border-b border-outline/20 focus:border-primary focus:outline-none py-1 text-sm font-bold" />
+                      </div>
+                    ))}
+                  </div>
+
+                  {(() => {
+                    const ew = getEffectiveWeight(product.weight, product.height, product.width, product.length);
+                    const volW = (product.height * product.width * product.length) / 6000;
+                    if (ew <= 0) return <p className="text-[11px] text-outline mt-2">Preencha peso ou dimensões para calcular o frete automaticamente pela tabela ML.</p>;
+                    return (
+                      <div className="mt-3 p-3 rounded-lg bg-surface-container-low space-y-1">
+                        {volW > 0 && <div className="flex justify-between text-xs"><span className="text-outline">Peso volumétrico</span><span className="font-mono font-semibold">{volW.toFixed(2)} kg</span></div>}
+                        <div className="flex justify-between text-xs"><span className="text-outline">Peso efetivo</span><span className="font-mono font-bold text-primary">{ew.toFixed(2)} kg</span></div>
+                        <div className="flex justify-between text-xs"><span className="text-outline">Custo frete (auto)</span><span className="font-mono font-bold text-primary">{formatCurrency(pricingResult.fixedFee + pricingResult.shippingFee)}</span></div>
+                      </div>
+                    );
+                  })()}
+
+                  {getEffectiveWeight(product.weight, product.height, product.width, product.length) <= 0 && (
+                    <div className="mt-4">
+                      <label className="label-text">Frete Grátis (&ge;79)</label>
+                      <div className="relative"><span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
+                        <NumberInput name="shippingFee" value={product.shippingFee} onChange={handleInputChange} className="input-field pl-10" step="0.01" min="0" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Step 5: Margem */}
+              <div className="bg-surface-container-lowest rounded-xl overflow-hidden">
+                <div className="px-6 py-3 bg-surface-container flex items-center gap-3 border-b border-outline-variant/10">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center flex-shrink-0">5</span>
+                  <span className="font-bold text-sm text-on-surface uppercase tracking-wide">Margem</span>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-bold text-outline uppercase tracking-wide">Modo de cálculo</span>
+                    <div className="flex bg-surface-container p-1 rounded-xl">
+                      <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
+                      <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
+                    </div>
+                  </div>
+                  {activeTab === 'reverse' ? (
+                    <div>
+                      <label className="label-text">Margem Desejada (%)</label>
+                      <div className="relative">
+                        <NumberInput name="desiredMargin" min="1" max="50" step="0.5" value={product.desiredMargin} onChange={handleInputChange} className="input-field pr-8 text-lg font-bold" />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="label-text">Preço de Venda Atual (R$)</label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
+                        <NumberInput value={currentPrice} onChange={(e: any) => setCurrentPrice(parseFloat(e.target.value) || 0)} className="input-field pl-10 text-lg font-bold" step="0.01" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
             </section>
 
             {/* ── Right: Results (5 cols) ── */}
-            <section className="col-span-12 lg:col-span-5 space-y-6">
+            <section className="col-span-12 lg:col-span-5 space-y-6 sticky top-24 self-start">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedId + activeTab + pricingResult.sellingPrice}
@@ -645,6 +661,17 @@ export default function App() {
             {/* ── Bottom: Saved Records ── */}
             {savedRecords.length > 0 && (
               <section className="col-span-12">
+                {/* Section divider */}
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="h-px flex-1 bg-outline-variant/20" />
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-outline-variant/20">
+                    <BarChart3 size={14} className="text-primary" />
+                    <span className="text-xs font-black text-primary uppercase tracking-widest">Registros Salvos</span>
+                    <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">{savedRecords.length}</span>
+                  </div>
+                  <div className="h-px flex-1 bg-outline-variant/20" />
+                </div>
+
                 <div className="bg-surface-container-low rounded-2xl overflow-hidden">
                   <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between">
                     <h3 className="font-headline text-lg font-bold">Registros Salvos</h3>

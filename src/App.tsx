@@ -946,23 +946,14 @@ function CategorySelector({
         </div>
       </div>
 
-      {/* Manual commission + fixed fee */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="label-text text-[10px]">Comissão %</label>
-          <div className="relative">
-            <NumberInput value={currentCommission}
-              onChange={(e: any) => { onManualChange(parseFloat(e.target.value) || 0); setSelectedLabel(''); }}
-              className="input-field pr-8 font-medium" step="0.1" min="0" max="99" />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
-          </div>
-        </div>
-        <div>
-          <label className="label-text text-[10px]">Taxa Fixa ML</label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">R$</span>
-            <input readOnly value="Auto (tabela ML)" className="input-field pl-10 text-outline text-xs cursor-not-allowed" />
-          </div>
+      {/* Manual commission */}
+      <div>
+        <label className="label-text text-[10px]">Comissão %</label>
+        <div className="relative">
+          <NumberInput value={currentCommission}
+            onChange={(e: any) => { onManualChange(parseFloat(e.target.value) || 0); setSelectedLabel(''); }}
+            className="input-field pr-8 font-medium" step="0.1" min="0" max="99" />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline text-sm">%</span>
         </div>
       </div>
     </div>

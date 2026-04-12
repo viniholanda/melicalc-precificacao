@@ -554,8 +554,8 @@ export default function App() {
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-bold text-outline uppercase tracking-wide">Modo de cálculo</span>
                     <div className="flex bg-surface-container p-1 rounded-xl">
-                      <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
                       <button onClick={() => setActiveTab('current')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'current' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO DE MERCADO</button>
+                      <button onClick={() => setActiveTab('reverse')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'reverse' ? 'bg-primary text-white shadow-md' : 'text-on-surface-variant hover:text-primary hover:bg-white/50'}`}>PREÇO OBJETIVO</button>
                     </div>
                   </div>
                   {activeTab === 'reverse' ? (

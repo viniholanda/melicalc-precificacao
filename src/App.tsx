@@ -399,7 +399,7 @@ export default function App() {
           {/* Hero title */}
           <div className="flex items-end justify-between">
             <div>
-              <span className="text-primary dark:text-black font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
+              <span className="text-primary dark:text-white font-bold text-xs tracking-widest uppercase">Análise de Lucratividade</span>
               <h2 className="font-headline text-3xl font-extrabold text-on-surface mt-1">
                 {product.name || 'Simulador de Precificação'}
               </h2>

@@ -358,7 +358,7 @@ export default function App() {
       <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
         <button
           onClick={addNewProduct}
-          className="mb-6 w-full bg-white dark:bg-white text-black dark:text-black border border-zinc-200 dark:border-transparent py-3 rounded-xl font-semibold shadow-lg hover:bg-zinc-300 dark:hover:bg-zinc-200 hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 text-sm"
+          className="mb-6 w-full bg-primary dark:bg-white text-white dark:text-black py-3 rounded-xl font-semibold shadow-lg hover:bg-zinc-700 dark:hover:bg-zinc-200 hover:shadow-xl hover:-translate-y-0.5 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 text-sm"
         >
           <Plus size={16} />
           Novo Produto

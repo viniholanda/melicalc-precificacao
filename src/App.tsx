@@ -342,7 +342,7 @@ export default function App() {
       {/* ── Top App Bar ── */}
       <header className="fixed top-0 w-full z-50 h-16 flex items-center px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
         <div className="flex-1"></div>
-        <h1 className="text-xl font-bold text-primary dark:text-black tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
+        <h1 className="text-xl font-bold text-primary dark:text-white tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
         <div className="flex-1 flex justify-end gap-3">
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}

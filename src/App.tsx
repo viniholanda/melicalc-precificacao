@@ -27,11 +27,17 @@ import {
   Calculator,
   Moon,
   Sun,
+  Share2,
+  Users,
+  Link2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product } from './types';
 import { calculatePricing, calculateCurrentMargin, ML_THRESHOLD, getEffectiveWeight } from './utils/pricing';
 import { getUniqueCategories, getSearchableEntries } from './data/commissions';
+import { useSharedRecords } from './lib/useSharedRecords';
+import { useSessionsHasRecords } from './lib/useSessionsHasRecords';
+import { isSupabaseConfigured } from './lib/supabase';
 
 type CommentColor = 'green' | 'yellow' | 'red' | '';
 
@@ -106,6 +112,27 @@ interface SavedRecord {
   commentColor: CommentColor;
 }
 
+interface SessionEntry {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+const SESSIONS_KEY = 'meli-sessions';
+
+function loadSessions(): SessionEntry[] {
+  try {
+    const raw = localStorage.getItem(SESSIONS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveSessions(sessions: SessionEntry[]) {
+  localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+}
+
 const INITIAL_PRODUCT: Product = {
   id: '1',
   name: 'Meu Produto',
@@ -126,7 +153,7 @@ const INITIAL_PRODUCT: Product = {
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 
-export default function App() {
+export default function App({ sessionId }: { sessionId: string }) {
   const [products, setProducts] = useState<Product[]>(() => {
     try {
       const saved = localStorage.getItem('meli-products');
@@ -165,7 +192,7 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  const [savedRecords, setSavedRecords] = useState<SavedRecord[]>(() => {
+  const localFallback = useMemo<SavedRecord[]>(() => {
     try {
       const saved = localStorage.getItem('meli-records');
       if (saved) {
@@ -184,9 +211,87 @@ export default function App() {
     } catch {
       return [];
     }
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [savedRecords, setSavedRecords, syncStatus] = useSharedRecords<SavedRecord>(sessionId, localFallback);
 
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<SessionEntry[]>(() => loadSessions());
+  const [showMentoradoModal, setShowMentoradoModal] = useState(false);
+  const [modalName, setModalName] = useState('');
+
+  const sessionIds = useMemo(() => sessions.map(s => s.id), [sessions]);
+  const hasRecordsBySession = useSessionsHasRecords(sessionIds);
+
+  // Garante que a sessão atual está na lista (caso seja a sessão local do mentor)
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    const list = loadSessions();
+    const exists = list.some(s => s.id === sessionId);
+    if (!exists) {
+      const updated = [
+        { id: sessionId, name: 'Sem nome', createdAt: new Date().toISOString() },
+        ...list,
+      ];
+      saveSessions(updated);
+      setSessions(updated);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
+
+  const shareUrl = isSupabaseConfigured
+    ? `${window.location.origin}/s/${sessionId}`
+    : '';
+
+  const copyLink = async (url: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(key);
+      setTimeout(() => setCopied(null), 2000);
+    } catch {
+      window.prompt('Copie o link:', url);
+    }
+  };
+
+  const handleShare = () => copyLink(shareUrl, 'current');
+
+  const handleNewMentorado = () => {
+    setModalName('');
+    setShowMentoradoModal(true);
+  };
+
+  const confirmNewMentorado = () => {
+    const name = modalName.trim() || 'Sem nome';
+    const newId = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2) + Date.now().toString(36);
+
+    const entry: SessionEntry = { id: newId, name, createdAt: new Date().toISOString() };
+    const updated = [entry, ...loadSessions()];
+    saveSessions(updated);
+    setSessions(updated);
+
+    localStorage.setItem('meli-session-id', newId);
+    localStorage.removeItem('meli-records');
+    const blankProduct: Product = {
+      id: Date.now().toString(),
+      name: '', link: '', cost: 0,
+      categoryTax: 0, taxPercentage: 0,
+      packaging: 0.5, fixedFee: 0, shippingFee: 0,
+      desiredMargin: 0, weight: 0, height: 0, width: 0, length: 0,
+    };
+    localStorage.setItem('meli-products', JSON.stringify([blankProduct]));
+    setShowMentoradoModal(false);
+    window.location.href = `/s/${newId}`;
+  };
+
+  const renameSession = (id: string, newName: string) => {
+    const updated = sessions.map(s => s.id === id ? { ...s, name: newName } : s);
+    saveSessions(updated);
+    setSessions(updated);
+  };
 
   const product = useMemo(() =>
     products.find(p => p.id === selectedId) || products[0] || INITIAL_PRODUCT,
@@ -196,6 +301,7 @@ export default function App() {
     localStorage.setItem('meli-products', JSON.stringify(products));
   }, [products]);
 
+  // Persist to localStorage as backup (works even offline)
   useEffect(() => {
     localStorage.setItem('meli-records', JSON.stringify(savedRecords));
   }, [savedRecords]);
@@ -244,7 +350,8 @@ export default function App() {
       weight: 0, height: 0, width: 0, length: 0,
     };
     setProducts(prev => [...prev, newProduct]);
-    setSelectedId(newProduct.id);
+    // Não muda o produto selecionado — usuário fica no atual,
+    // novo aparece no sidebar para clicar quando quiser.
   };
 
   const deleteProduct = (id: string) => {
@@ -343,7 +450,38 @@ export default function App() {
       <header className="fixed top-0 w-full z-50 h-16 flex items-center px-6 bg-surface border-b border-outline-variant/20 transition-colors duration-300">
         <div className="flex-1"></div>
         <h1 className="text-xl font-bold text-primary dark:text-white tracking-wide font-headline text-center flex-none uppercase">MeliCalc</h1>
-        <div className="flex-1 flex justify-end gap-3">
+        <div className="flex-1 flex justify-end items-center gap-3">
+          {syncStatus !== 'disabled' && (
+            <span
+              className="text-xs text-outline hidden sm:inline"
+              title="Status da sincronização em tempo real"
+            >
+              {syncStatus === 'saving' && 'Salvando…'}
+              {syncStatus === 'saved' && 'Sincronizado'}
+              {syncStatus === 'idle' && 'Pronto'}
+              {syncStatus === 'error' && 'Erro ao sincronizar'}
+            </span>
+          )}
+          {syncStatus !== 'disabled' && (
+            <button
+              onClick={handleNewMentorado}
+              className="px-3 py-1.5 rounded-lg border border-outline-variant/40 text-on-surface-variant text-xs font-bold hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors flex items-center gap-1.5"
+              title="Criar nova sessão para um novo mentorado"
+            >
+              <Plus size={14} />
+              Novo Mentorado
+            </button>
+          )}
+          {syncStatus !== 'disabled' && (
+            <button
+              onClick={handleShare}
+              className="px-3 py-1.5 rounded-lg bg-primary text-white dark:bg-neutral-200 dark:text-primary text-xs font-bold hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors flex items-center gap-1.5"
+              title="Copiar link do cliente"
+            >
+              <Share2 size={14} />
+              {copied === 'current' ? 'Copiado!' : 'Compartilhar'}
+            </button>
+          )}
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
             className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 text-on-surface-variant hover:text-on-surface transition-colors"
@@ -355,40 +493,119 @@ export default function App() {
       </header>
 
       {/* ── Side Nav ── */}
-      <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col transition-colors duration-300">
-        <button
-          onClick={addNewProduct}
-          className="mb-6 w-full py-3 rounded-xl bg-primary text-white dark:bg-neutral-200 dark:text-primary font-bold shadow-xl hover:bg-neutral-600 dark:hover:bg-neutral-300 hover:shadow-primary/40 active:scale-95 transition-all text-sm uppercase tracking-wide border-b-4 border-primary-fixed dark:border-neutral-400 flex items-center justify-center gap-2"
-        >
-          <Plus size={16} />
-          Novo Produto
-        </button>
+      <aside className="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant/20 p-4 flex flex-col gap-4 transition-colors duration-300 overflow-y-auto custom-scrollbar">
 
-        <div className="space-y-1 overflow-y-auto custom-scrollbar">
-          <h2 className="text-primary font-headline font-bold text-xs tracking-widest uppercase opacity-60 mb-2">Meus Produtos</h2>
-          {products.map(p => (
-            <div
-              key={p.id}
-              onClick={() => setSelectedId(p.id)}
-              className={`group w-full flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-150 ${selectedId === p.id
-                ? 'bg-white text-primary shadow-sm font-bold dark:bg-surface-container-highest dark:text-on-surface'
-                : 'text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-white/10'
-                }`}
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <LayoutDashboard size={18} className={selectedId === p.id ? 'text-primary dark:text-on-surface' : 'text-slate-400 dark:text-slate-500'} />
-                <span className="text-sm truncate">{p.name || 'Sem título'}</span>
-              </div>
-              {products.length > 1 && (
-                <button
-                  onClick={(e) => { e.stopPropagation(); deleteProduct(p.id); }}
-                  className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-error transition-all flex-shrink-0"
-                >
-                  <Trash2 size={13} />
-                </button>
-              )}
+        {/* Mentorados */}
+        {isSupabaseConfigured && sessions.length > 0 && (
+          <div>
+            <h2 className="text-primary font-headline font-bold text-xs tracking-widest uppercase opacity-60 mb-2 flex items-center gap-1.5">
+              <Users size={12} /> Mentorados
+            </h2>
+            <div className="space-y-1">
+              {sessions.map(s => {
+                const isActive = s.id === sessionId;
+                const sUrl = `${window.location.origin}/s/${s.id}`;
+                const hasRecords = isActive
+                  ? savedRecords.length > 0
+                  : !!hasRecordsBySession[s.id];
+                return (
+                  <div
+                    key={s.id}
+                    className={`group flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-all duration-150 ${isActive
+                      ? 'bg-white dark:bg-surface-container-highest shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-white/10'}`}
+                    onClick={() => { if (!isActive) window.location.href = `/s/${s.id}`; }}
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span
+                        className={`w-2 h-2 rounded-full flex-shrink-0 ${hasRecords ? 'bg-green-500' : 'bg-red-500'}`}
+                        title={hasRecords ? 'Mentorado já adicionou produtos' : 'Mentorado ainda não adicionou produtos'}
+                      />
+                      <span
+                        className={`text-sm truncate font-medium ${isActive ? 'text-primary dark:text-on-surface font-bold' : ''}`}
+                        title={s.name}
+                      >
+                        {s.name}
+                      </span>
+                    </div>
+                    <div className="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 flex-shrink-0">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); copyLink(sUrl, s.id); }}
+                        className="p-1 text-outline hover:text-primary transition-colors"
+                        title="Copiar link"
+                      >
+                        {copied === s.id ? <Check size={12} className="text-ml-green" /> : <Link2 size={12} />}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const novo = window.prompt('Renomear mentorado:', s.name);
+                          if (novo && novo.trim()) renameSession(s.id, novo.trim());
+                        }}
+                        className="p-1 text-outline hover:text-primary transition-colors"
+                        title="Renomear"
+                      >
+                        <Pencil size={12} />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!window.confirm(`Excluir "${s.name}"? Esta ação não pode ser desfeita.`)) return;
+                          const updated = sessions.filter(x => x.id !== s.id);
+                          saveSessions(updated);
+                          setSessions(updated);
+                          if (s.id === sessionId) window.location.href = '/';
+                        }}
+                        className="p-1 text-outline hover:text-error transition-colors"
+                        title="Excluir mentorado"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
+            <div className="h-px bg-outline-variant/20 mt-3" />
+          </div>
+        )}
+
+        {/* Produtos */}
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={addNewProduct}
+            className="w-full py-3 rounded-xl bg-primary text-white dark:bg-neutral-200 dark:text-primary font-bold shadow-xl hover:bg-neutral-600 dark:hover:bg-neutral-300 hover:shadow-primary/40 active:scale-95 transition-all text-sm uppercase tracking-wide border-b-4 border-primary-fixed dark:border-neutral-400 flex items-center justify-center gap-2"
+          >
+            <Plus size={16} />
+            Novo Produto
+          </button>
+
+          <div className="space-y-1">
+            <h2 className="text-primary font-headline font-bold text-xs tracking-widest uppercase opacity-60 mb-2">Meus Produtos</h2>
+            {products.map(p => (
+              <div
+                key={p.id}
+                onClick={() => setSelectedId(p.id)}
+                className={`group w-full flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-150 ${selectedId === p.id
+                  ? 'bg-white text-primary shadow-sm font-bold dark:bg-surface-container-highest dark:text-on-surface'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-white/10'
+                  }`}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <LayoutDashboard size={18} className={selectedId === p.id ? 'text-primary dark:text-on-surface' : 'text-slate-400 dark:text-slate-500'} />
+                  <span className="text-sm truncate">{p.name || 'Sem título'}</span>
+                </div>
+                {products.length > 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); deleteProduct(p.id); }}
+                    className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-error transition-all flex-shrink-0"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </aside>
 
@@ -846,6 +1063,46 @@ export default function App() {
           )}
         </div>
       </main>
+
+      {/* ── Modal: Novo Mentorado ── */}
+      {showMentoradoModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          onClick={() => setShowMentoradoModal(false)}
+        >
+          <div
+            className="bg-surface rounded-2xl shadow-2xl p-8 w-full max-w-sm mx-4"
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-extrabold text-on-surface mb-1">Novo Mentorado</h3>
+            <p className="text-sm text-outline mb-6">Um link exclusivo será gerado para este mentorado.</p>
+            <label className="label-text block mb-1">Nome do mentorado</label>
+            <input
+              autoFocus
+              type="text"
+              value={modalName}
+              onChange={e => setModalName(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') confirmNewMentorado(); if (e.key === 'Escape') setShowMentoradoModal(false); }}
+              className="input-field w-full mb-6"
+              placeholder="Ex: João Silva"
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowMentoradoModal(false)}
+                className="flex-1 py-2.5 rounded-xl border border-outline-variant/40 text-on-surface-variant text-sm font-bold hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmNewMentorado}
+                className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-neutral-700 transition-colors"
+              >
+                Criar sessão
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

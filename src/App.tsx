@@ -909,21 +909,21 @@ export default function App({ sessionId }: { sessionId: string }) {
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-separate border-spacing-y-1 px-4 table-fixed min-w-[1200px]">
+                  <table className="w-full text-left border-separate border-spacing-y-1 px-4 table-fixed min-w-[1380px]">
                     <thead>
                       <tr className="text-[10px] font-bold text-outline uppercase tracking-widest">
                         <th className="pb-3 pl-4 w-[160px]">Produto</th>
                         <th className="pb-3 px-2 w-[100px]">Link</th>
-                        <th className="pb-3 px-2 text-right">Custo</th>
-                        <th className="pb-3 px-2 text-right">Embal.</th>
-                        <th className="pb-3 px-2 text-right">Tarifa%</th>
-                        <th className="pb-3 px-2 text-right">Imposto%</th>
-                        <th className="pb-3 px-2 text-right">Margem%</th>
-                        <th className="pb-3 px-2 text-right">Preço Venda</th>
-                        <th className="pb-3 px-2 text-right">Lucro</th>
-                        <th className="pb-3 px-2 pr-6 text-right">Margem Real</th>
+                        <th className="pb-3 px-3 text-right w-[90px]">Custo</th>
+                        <th className="pb-3 px-3 text-right w-[80px]">Embal.</th>
+                        <th className="pb-3 px-3 text-right w-[80px]">Tarifa%</th>
+                        <th className="pb-3 px-3 text-right w-[90px]">Imposto%</th>
+                        <th className="pb-3 px-3 text-right w-[90px]">Margem%</th>
+                        <th className="pb-3 px-3 text-right w-[120px]">Preço Venda</th>
+                        <th className="pb-3 px-3 text-right w-[110px]">Lucro</th>
+                        <th className="pb-3 px-3 pr-6 text-right w-[110px]">Margem Real</th>
                         <th className="pb-3 px-2 pl-6 w-[180px]">Comentário</th>
-                        <th className="pb-3 pr-4 text-right">Ações</th>
+                        <th className="pb-3 pr-4 text-right w-[90px]">Ações</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -968,9 +968,9 @@ export default function App({ sessionId }: { sessionId: string }) {
                                     <span className="text-xs text-outline ml-0.5">%</span>
                                   </div>
                                 </td>
-                                <td className="py-3 px-2 text-right font-mono font-bold text-on-surface text-sm">{formatCurrency(record.sellingPrice)}</td>
-                                <td className={`py-3 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
-                                <td className={`py-3 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
+                                <td className="py-3 px-3 text-right font-mono font-bold text-on-surface text-sm whitespace-nowrap">{formatCurrency(record.sellingPrice)}</td>
+                                <td className={`py-3 px-3 text-right font-mono font-bold text-sm whitespace-nowrap ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
+                                <td className={`py-3 px-3 pr-6 text-right font-mono font-bold text-sm whitespace-nowrap ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>{record.profitMargin.toFixed(2)}%</td>
                                 <td className="py-3 px-2 pl-6">
                                   <div className="flex flex-col gap-1.5">
                                     <input type="text" value={record.comment} onChange={e => updateRecord(record.id, 'comment', e.target.value)} placeholder="Comentário..."
@@ -1011,11 +1011,11 @@ export default function App({ sessionId }: { sessionId: string }) {
                                     </a>
                                   ) : <span className="text-outline/40">—</span>}
                                 </td>
-                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{formatCurrency(record.cost)}</td>
-                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{formatCurrency(record.packaging)}</td>
-                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{record.categoryTax}%</td>
-                                <td className="py-4 px-2 text-right font-mono text-sm text-on-surface-variant">{record.taxPercentage}%</td>
-                                <td className="py-4 px-2">
+                                <td className="py-4 px-3 text-right font-mono text-sm text-on-surface-variant whitespace-nowrap">{formatCurrency(record.cost)}</td>
+                                <td className="py-4 px-3 text-right font-mono text-sm text-on-surface-variant whitespace-nowrap">{formatCurrency(record.packaging)}</td>
+                                <td className="py-4 px-3 text-right font-mono text-sm text-on-surface-variant whitespace-nowrap">{record.categoryTax}%</td>
+                                <td className="py-4 px-3 text-right font-mono text-sm text-on-surface-variant whitespace-nowrap">{record.taxPercentage}%</td>
+                                <td className="py-4 px-3">
                                   <div className="flex items-center justify-end">
                                     <NumberInput value={record.desiredMargin} onChange={(e: any) => updateRecord(record.id, 'desiredMargin', parseFloat(e.target.value) || 0)}
                                       step="0.5" min="1" max="50"
@@ -1023,9 +1023,9 @@ export default function App({ sessionId }: { sessionId: string }) {
                                     <span className="text-xs text-outline ml-0.5">%</span>
                                   </div>
                                 </td>
-                                <td className="py-4 px-2 text-right font-mono font-bold text-sm text-on-surface">{formatCurrency(record.sellingPrice)}</td>
-                                <td className={`py-4 px-2 text-right font-mono font-bold text-sm ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
-                                <td className={`py-4 px-2 pr-6 text-right font-mono font-bold text-sm ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>
+                                <td className="py-4 px-3 text-right font-mono font-bold text-sm text-on-surface whitespace-nowrap">{formatCurrency(record.sellingPrice)}</td>
+                                <td className={`py-4 px-3 text-right font-mono font-bold text-sm whitespace-nowrap ${record.profit >= 0 ? 'text-ml-green' : 'text-error'}`}>{formatCurrency(record.profit)}</td>
+                                <td className={`py-4 px-3 pr-6 text-right font-mono font-bold text-sm whitespace-nowrap ${record.profitMargin >= 0 ? 'text-ml-green' : 'text-error'}`}>
                                   {record.profitMargin.toFixed(2)}%
                                 </td>
                                 <td className="py-4 px-2 pl-6">

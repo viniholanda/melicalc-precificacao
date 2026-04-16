@@ -909,7 +909,7 @@ export default function App({ sessionId }: { sessionId: string }) {
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-separate border-spacing-y-1 px-4 table-fixed min-w-[1380px]">
+                  <table className="w-full text-left border-separate border-spacing-y-1 px-4 table-fixed min-w-[1330px]">
                     <thead>
                       <tr className="text-[10px] font-bold text-outline uppercase tracking-widest">
                         <th className="pb-3 pl-4 w-[160px]">Produto</th>
@@ -919,9 +919,9 @@ export default function App({ sessionId }: { sessionId: string }) {
                         <th className="pb-3 px-3 text-right w-[80px]">Tarifa%</th>
                         <th className="pb-3 px-3 text-right w-[90px]">Imposto%</th>
                         <th className="pb-3 px-3 text-right w-[90px]">Margem%</th>
-                        <th className="pb-3 px-3 text-right w-[120px]">Preço Venda</th>
-                        <th className="pb-3 px-3 text-right w-[110px]">Lucro</th>
-                        <th className="pb-3 px-3 pr-6 text-right w-[110px]">Margem Real</th>
+                        <th className="pb-3 px-3 text-right w-[95px]">Preço Venda</th>
+                        <th className="pb-3 px-3 text-right w-[95px]">Lucro</th>
+                        <th className="pb-3 px-3 pr-6 text-right w-[95px]">Margem Real</th>
                         <th className="pb-3 px-2 pl-6 w-[180px]">Comentário</th>
                         <th className="pb-3 pr-4 text-right w-[90px]">Ações</th>
                       </tr>
